@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2021 at 07:23 PM
+-- Generation Time: Jun 08, 2021 at 05:42 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -77,8 +77,7 @@ CREATE TABLE `properti` (
   `rating` double NOT NULL,
   `kota` varchar(45) NOT NULL,
   `status` enum('Tersewa','Belum tersewa') NOT NULL,
-  `tipe_properti` enum('Rumah','Apartemen','Villa') NOT NULL,
-  `diskon` int(11) NOT NULL
+  `tipe_properti` enum('Rumah','Apartemen','Villa') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -96,7 +95,8 @@ CREATE TABLE `riwayat_transaksi` (
   `durasi_sewa` int(11) NOT NULL,
   `jumlah_orang` varchar(45) NOT NULL,
   `tipe_pembayaran` enum('Debit','Kredit') NOT NULL,
-  `nomor_kartu` varchar(45) NOT NULL
+  `nomor_kartu` varchar(45) NOT NULL,
+  `diskon` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
