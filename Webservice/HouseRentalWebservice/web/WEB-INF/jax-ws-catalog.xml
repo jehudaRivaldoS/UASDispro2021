@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/HouseRentalWebsite/UserService?wsdl" uri="wsdl/localhost_8080/HouseRentalWebsite/UserService.wsdl"/>
+    <system systemId="http://localhost:8080/HouseRentalWebsite/UserService?xsd=1" uri="wsdl/localhost_8080/HouseRentalWebsite/UserService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/HouseRentalWebsite/TransaksiService?wsdl" uri="wsdl/localhost_8080/HouseRentalWebsite/TransaksiService.wsdl"/>
+    <system systemId="http://localhost:8080/HouseRentalWebsite/TransaksiService?xsd=1" uri="wsdl/localhost_8080/HouseRentalWebsite/TransaksiService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/HouseRentalWebsite/PropertiService?wsdl" uri="wsdl/localhost_8080/HouseRentalWebsite/PropertiService.wsdl"/>
+    <system systemId="http://localhost:8080/HouseRentalWebsite/PropertiService?xsd=1" uri="wsdl/localhost_8080/HouseRentalWebsite/PropertiService.xsd_1.xsd"/>
+</catalog>
