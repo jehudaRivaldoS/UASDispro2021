@@ -153,7 +153,7 @@
                             <blockquote>              
                                 <div class="log">
                                     <p>Silahkan masuk untuk mendapatkan penawaran yang menarik.</p>
-                                    <button type="button" class="btn btn-info" id="openBox">Login</button>     
+                                    <div class="btn btn-primary" id="openBox">Login</div>     
                                 </div>  
                             </blockquote>           
                         </div>
@@ -197,7 +197,7 @@
     </div>
 
     <!-- FOOTER =============================-->
-    <div class="footer text-center">
+    <div class="footer text-center" id="blur">
         <div class="container">
             <div class="row">
                 <p class="footernote">
