@@ -28,10 +28,12 @@ header{
   box-shadow: 0px 0px 5px #aaa inset;
   padding: 10px 30px;
 }
+
 .pengantar p{
+  font-family: Montserrat;
   padding-top: 10px;
   padding-bottom: 10px;
-  text-align: left;
+  text-align: justify;
 }
 footer{
   text-align: center;

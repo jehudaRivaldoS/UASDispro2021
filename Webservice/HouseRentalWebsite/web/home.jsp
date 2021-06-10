@@ -111,8 +111,8 @@
 							 This is a short excerpt to generally describe what the item is about.
 						</p>
 						<p>
-							<a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Purchase</a>
-							<a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
+							<a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Sewa</a>
+							<a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Detail</a>
 						</p>
 					</div>
 					<span><img src="assets/images/rumah.jpg" class="pic" alt=""></span>

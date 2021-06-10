@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="HomeService">
-      <implementation-class>com.myrental.HomeService</implementation-class>
+    <service name="UserService">
+      <implementation-class>com.myrental.UserService</implementation-class>
+    </service>
+    <service name="TransaksiService">
+      <implementation-class>com.myrental.TransaksiService</implementation-class>
+    </service>
+    <service name="PropertiService">
+      <implementation-class>com.myrental.PropertiService</implementation-class>
     </service>
   </services>
   <clients/>

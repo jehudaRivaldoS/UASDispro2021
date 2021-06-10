@@ -5,6 +5,7 @@
  */
 package com.myrental;
 
+import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -13,14 +14,15 @@ import javax.jws.WebParam;
  *
  * @author Acer
  */
-@WebService(serviceName = "HomeService")
-public class HomeService {
+@WebService(serviceName = "PropertiService")
+public class PropertiService {
 
     /**
-     * This is a sample web service operation
+     * Web service operation
      */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
+    @WebMethod(operationName = "showData")
+    public ArrayList showData() {
+        //TODO write your implementation code here:
+        return null;
     }
 }
