@@ -32,7 +32,7 @@ public class UserService {
      * Web service operation
      */
     @WebMethod(operationName = "register")
-    public String register(@WebParam(name = "username") String username, @WebParam(name = "password") String password, @WebParam(name = "nama") String nama, @WebParam(name = "alamat") String alamat, @WebParam(name = "nomor_telepon") String nomor_telepon, @WebParam(name = "tanggal_lahir") Date tanggal_lahir, @WebParam(name = "tempat_lahir") String tempat_lahir) {
+    public String register(@WebParam(name = "username") String username, @WebParam(name = "password") String password, @WebParam(name = "nama") String nama, @WebParam(name = "alamat") String alamat, @WebParam(name = "nomor_telepon") String nomor_telepon, @WebParam(name = "tanggal_lahir") String tanggal_lahir, @WebParam(name = "tempat_lahir") String tempat_lahir) {
         String status = "";
         for (User u : model.showData()) {
             String usernm = u.getUsername();
@@ -75,9 +75,10 @@ public class UserService {
      /**
      * Web service operation
      */
-    @WebMethod(operationName = "showData")
-    public ArrayList<User> showData() {
+    @WebMethod(operationName = "display")
+    public ArrayList<User> display() {
         //TODO write your implementation code here:
-        return model.showData();
+        User us = new User();
+        return us.showData();
     }
 }

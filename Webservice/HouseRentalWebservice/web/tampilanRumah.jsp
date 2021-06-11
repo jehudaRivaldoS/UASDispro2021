@@ -58,7 +58,7 @@
                     <div class="editContent">
 
                         <div align="center">
-                            <img src="assets/images/download.jpg" height = "200px" width="300px">	
+                            <img src="assets/images/rumah.jpg" height = "200px" width="300px">	
                             <img src="assets/images/mandi.jpg" height = "200px" width="300px">
                             <img src="assets/images/tdr.jpeg" height = "200px" width="300px">
                         </div>
@@ -79,24 +79,19 @@
                             </div>
                             <br/>
                             <div class="product-details text-left">
-                                <p>
-                                    Rumah yang aman, nyaman dan hemat untuk keluarga Indonesia.
-                                </p>
-                                <div class="properties-box">
                                     <ul class="unstyle">
                                         <li><b class="propertyname">Alamat Rumah : </b> Jalan Sukaduka nomor 12, Surabaya</li>
                                         <li><b class="propertyname">Harga per malam : </b> Rp 150.000</li>
                                         <li><b class="propertyname">Fasilitas Rumah : </b> AC di setiap kamar, 2 kamar tidur, 1 kamar mandi, 1 garasi mobil, dan 1 taman</li>
                                         <li><b class="propertyname">Deskripsi Rumah : </b> 200 m2, lantai 2, listrik memakai token, lokasi dekat kota</li>
                                     </ul>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div>
 
-                            <form>
+                            <form method="POST" action="pembayaran.jsp">
                                 <p>Form Cek in Sewa Rumah</p>
                                 <p>Nama : <input type="text"></p>
                                 <p>Alamat : <input type="text"></p>

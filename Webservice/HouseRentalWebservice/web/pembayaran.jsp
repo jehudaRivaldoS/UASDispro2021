@@ -15,7 +15,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
     </head>
     <body>
 
@@ -130,7 +130,7 @@
                         </div>
                     </form>
                     <div id="edd_checkout_form_wrap" class="edd_clearfix">
-                        <form id="edd_purchase_form" class="edd_form" action="#" method="POST">
+                        <form id="edd_purchase_form" class="edd_form" action="reservasi.jsp" method="POST">
                             <fieldset id="edd_checkout_user_info">
                                 <legend>Pembayaran</legend>
                                 <p class="form-check">
@@ -170,7 +170,7 @@
             <div class="container">
                 <div class="row">
                     <p class="footernote">
-                        Connect with Scorilo
+                        Connect with myRental
                     </p>
                     <ul class="social-iconsfooter">
                         <li><a href="#"><i class="fa fa-phone"></i></a></li>
@@ -180,7 +180,7 @@
                         <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
                     </ul>
                     <p>
-                        &copy; 2017 Your Website Name<br/>
+                        &copy; 2021 myRental<br/>
                         Scorilo - Free template by <a href="https://www.wowthemes.net/">WowThemesNet</a>
                     </p>
                 </div>

@@ -4,19 +4,19 @@
 
 <xs:element name="checkLoginResponse" type="tns:checkLoginResponse"/>
 
+<xs:element name="display" type="tns:display"/>
+
+<xs:element name="displayResponse" type="tns:displayResponse"/>
+
 <xs:element name="register" type="tns:register"/>
 
 <xs:element name="registerResponse" type="tns:registerResponse"/>
 
-<xs:element name="showData" type="tns:showData"/>
-
-<xs:element name="showDataResponse" type="tns:showDataResponse"/>
-
-<xs:complexType name="showData">
+<xs:complexType name="display">
 <xs:sequence/>
 </xs:complexType>
 
-<xs:complexType name="showDataResponse">
+<xs:complexType name="displayResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:user" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
@@ -30,7 +30,7 @@
 <xs:element name="nama" type="xs:string" minOccurs="0"/>
 <xs:element name="nomor_telepon" type="xs:string" minOccurs="0"/>
 <xs:element name="password" type="xs:string" minOccurs="0"/>
-<xs:element name="tanggal_lahir" type="tns:date" minOccurs="0"/>
+<xs:element name="tanggal_lahir" type="xs:string" minOccurs="0"/>
 <xs:element name="tempat_lahir" type="xs:string" minOccurs="0"/>
 <xs:element name="username" type="xs:string" minOccurs="0"/>
 </xs:sequence>
@@ -39,10 +39,6 @@
 </xs:complexType>
 
 <xs:complexType name="myConnection">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="date">
 <xs:sequence/>
 </xs:complexType>
 
@@ -66,7 +62,7 @@
 <xs:element name="nama" type="xs:string" minOccurs="0"/>
 <xs:element name="alamat" type="xs:string" minOccurs="0"/>
 <xs:element name="nomor_telepon" type="xs:string" minOccurs="0"/>
-<xs:element name="tanggal_lahir" type="tns:date" minOccurs="0"/>
+<xs:element name="tanggal_lahir" type="xs:string" minOccurs="0"/>
 <xs:element name="tempat_lahir" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>

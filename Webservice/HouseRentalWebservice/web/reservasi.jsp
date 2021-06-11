@@ -33,7 +33,7 @@
                         </div>
                         <div id="navbar-collapse-02" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="propClone"><a href="index.html">Utama</a></li>
+                                <li class="propClone"><a href="produk.jsp">Utama</a></li>
                                 <li class="propClone"><a href="shop.html">Produk</a></li>
                                 <li class="propClone"><a href="product.html">Reservasi Saya</a></li>
                                 <li class="propClone"><a href="checkout.html">Profil</a></li>
@@ -129,20 +129,6 @@
                             </table>
                         </div>
                     </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- CALL TO ACTION =============================-->
-        <section class="content-block" style="background-color:#00bba7;">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
-                            <h1 class="callactiontitle"> Promote Items Area Give Discount to Buyers <span class="callactionbutton"><i class="fa fa-gift"></i> WOW24TH</span>
-                            </h1>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>

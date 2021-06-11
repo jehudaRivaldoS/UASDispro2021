@@ -50,14 +50,14 @@
         </header>                          
         <div class="kotak">
             <h3>Register</h3><br>
-            <form method="post" action="">     
-                <input type="email" id="nama" placeholder="Nama"><br>
-                <textarea cols="50" rows="10" id="alamat" placeholder="Alamat"></textarea><br>
-                <input type="text" id="tmptLahir" placeholder="Tempat Lahir"><br>
-                <input type="date" id="tglLahir"><br>
-                <input type="text" id="tlp" placeholder="08125320865"><br>
-                <input type="text" id="user" placeholder="Username"><br>
-                <input type="password" id="pass" placeholder="Password"><br>                
+            <form method="POST" action="checkRegister.jsp">     
+                <input type="text" name="nama" placeholder="Nama"><br>
+                <textarea cols="50" rows="10" name="alamat" placeholder="Alamat"></textarea><br>
+                <input type="text" name="tmptLahir" placeholder="Tempat Lahir"><br>
+                <input type="date" name="tglLahir"><br>
+                <input type="text" name="tlp" placeholder="08125320865"><br>
+                <input type="text" name="user" placeholder="Username"><br>
+                <input type="password" name="pass" placeholder="Password"><br>                
                 <div class="button-content">
                     <button type="submit" class="btn back">Register</button>
                     <button type="button" class="btn back" onclick="window.location.href = 'index.jsp'">Batal</button>

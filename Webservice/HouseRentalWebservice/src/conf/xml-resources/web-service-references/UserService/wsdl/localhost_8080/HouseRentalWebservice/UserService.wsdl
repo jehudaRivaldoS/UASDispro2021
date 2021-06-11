@@ -10,30 +10,30 @@
 <message name="registerResponse">
 <part name="parameters" element="tns:registerResponse"/>
 </message>
-<message name="showData">
-<part name="parameters" element="tns:showData"/>
-</message>
-<message name="showDataResponse">
-<part name="parameters" element="tns:showDataResponse"/>
-</message>
 <message name="checkLogin">
 <part name="parameters" element="tns:checkLogin"/>
 </message>
 <message name="checkLoginResponse">
 <part name="parameters" element="tns:checkLoginResponse"/>
 </message>
+<message name="display">
+<part name="parameters" element="tns:display"/>
+</message>
+<message name="displayResponse">
+<part name="parameters" element="tns:displayResponse"/>
+</message>
 <portType name="UserService">
 <operation name="register">
 <input wsam:Action="http://myrental.com/UserService/registerRequest" message="tns:register"/>
 <output wsam:Action="http://myrental.com/UserService/registerResponse" message="tns:registerResponse"/>
 </operation>
-<operation name="showData">
-<input wsam:Action="http://myrental.com/UserService/showDataRequest" message="tns:showData"/>
-<output wsam:Action="http://myrental.com/UserService/showDataResponse" message="tns:showDataResponse"/>
-</operation>
 <operation name="checkLogin">
 <input wsam:Action="http://myrental.com/UserService/checkLoginRequest" message="tns:checkLogin"/>
 <output wsam:Action="http://myrental.com/UserService/checkLoginResponse" message="tns:checkLoginResponse"/>
+</operation>
+<operation name="display">
+<input wsam:Action="http://myrental.com/UserService/displayRequest" message="tns:display"/>
+<output wsam:Action="http://myrental.com/UserService/displayResponse" message="tns:displayResponse"/>
 </operation>
 </portType>
 <binding name="UserServicePortBinding" type="tns:UserService">
@@ -47,7 +47,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="showData">
+<operation name="checkLogin">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -56,7 +56,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="checkLogin">
+<operation name="display">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

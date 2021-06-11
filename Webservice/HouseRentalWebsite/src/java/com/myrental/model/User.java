@@ -23,7 +23,7 @@ public class User extends myConnection{
     private String nama;
     private String alamat;
     private String nomor_telepon;
-    private Date tanggal_lahir;
+    private String tanggal_lahir;
     private String tempat_lahir;
 
    
@@ -32,7 +32,7 @@ public class User extends myConnection{
         getConnect();
     }
     
-    public User(String username, String password, String nama, String alamat, String nomor_telepon, Date tanggal_lahir, String tempat_lahir, Blob foto) {
+    public User(String username, String password, String nama, String alamat, String nomor_telepon, String tanggal_lahir, String tempat_lahir, Blob foto) {
         this.username = username;
         this.password = password;
         this.nama = nama;
@@ -44,7 +44,7 @@ public class User extends myConnection{
         
     }
 
-    public User(String username, String password, String nama, String alamat, String nomor_telepon, Date tanggal_lahir, String tempat_lahir) {
+    public User(String username, String password, String nama, String alamat, String nomor_telepon, String tanggal_lahir, String tempat_lahir) {
         this.username = username;
         this.password = password;
         this.nama = nama;
@@ -79,7 +79,6 @@ public class User extends myConnection{
         this.alamat = alamat;
         this.nomor_telepon = nomor_telepon;
         this.tempat_lahir = tempat_lahir;
-        getConnect();
     }
 
 
@@ -129,11 +128,11 @@ public class User extends myConnection{
         this.nomor_telepon = nomor_telepon;
     }
 
-    public Date getTanggal_lahir() {
+    public String getTanggal_lahir() {
         return tanggal_lahir;
     }
 
-    public void setTanggal_lahir(Date tanggal_lahir) {
+    public void setTanggal_lahir(String tanggal_lahir) {
         this.tanggal_lahir = tanggal_lahir;
     }
 
@@ -153,11 +152,7 @@ public class User extends myConnection{
             while(result.next()){
                 User u = new User(
                         result.getString("username"),
-                        result.getString("password"),
-                        result.getString("nama"), 
-                        result.getString("alamat"),
-                        result.getString("nomor_telepon"),
-                        result.getString("tempat_lahir")
+                        result.getString("password")
                 );
                 temp.add(u);
             }
@@ -169,15 +164,16 @@ public class User extends myConnection{
     
     public void insert(){
         try {
-            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO user (`username`, `password`, `nama`, `alamat`, `nomor_telpon`, `tanggal_lahir`, `tempat_lahir`) VALUES (?,?,?,?,?,?,?);");
             
             sql.setString(1, getUsername());
             sql.setString(2, getPassword());
             sql.setString(3, getNama());
             sql.setString(4, getAlamat());
             sql.setString(5, getNomor_telepon());
-            sql.setDate(6, getTanggal_lahir());
+            sql.setString(6, getTanggal_lahir());
             sql.setString(7, getTempat_lahir());
+            
             sql.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
