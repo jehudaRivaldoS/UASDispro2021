@@ -85,14 +85,13 @@
                                         This is a short excerpt to generally describe what the item is about.
                                     </p>
                                     <p>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Purchase</a>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
+                                        <a href="tampilanRumah.jsp" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
                                     </p>
                                 </div>
                                 <span><img src="assets/images/rumah2.jpg" class="pic" alt=""></span>
                             </div>
                             <div class="product-details">
-                                <a href="#">
+                                <a href="tampilanRumah.jsp">
                                     <h1>Rumah Aman</h1>
                                 </a>
                                 <span class="price">

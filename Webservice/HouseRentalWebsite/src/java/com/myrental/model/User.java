@@ -25,7 +25,7 @@ public class User extends myConnection{
     private String nomor_telepon;
     private Date tanggal_lahir;
     private String tempat_lahir;
-   // private Blob foto;
+
    
     
     public User() {
@@ -40,7 +40,7 @@ public class User extends myConnection{
         this.nomor_telepon = nomor_telepon;
         this.tanggal_lahir = tanggal_lahir;
         this.tempat_lahir = tempat_lahir;
-        //this.foto = foto;
+        getConnect();
         
     }
 
@@ -52,11 +52,41 @@ public class User extends myConnection{
         this.nomor_telepon = nomor_telepon;
         this.tanggal_lahir = tanggal_lahir;
         this.tempat_lahir = tempat_lahir;
+        getConnect();
     }
+    
+    public User(String username, String password, String nama, String alamat, String nomor_telepon) {
+        this.username = username;
+        this.password = password;
+        this.nama = nama;
+        this.alamat = alamat;
+        this.nomor_telepon = nomor_telepon;
+        getConnect();
+    }
+    
+    public User(String username, String password, String nama) {
+        this.username = username;
+        this.password = password;
+        this.nama = nama;
+     
+        getConnect();
+    }
+    
+    public User(String username, String password, String nama, String alamat, String nomor_telepon, String tempat_lahir) {
+        this.username = username;
+        this.password = password;
+        this.nama = nama;
+        this.alamat = alamat;
+        this.nomor_telepon = nomor_telepon;
+        this.tempat_lahir = tempat_lahir;
+        getConnect();
+    }
+
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        getConnect();
     }
 
     public String getUsername() {
@@ -115,29 +145,19 @@ public class User extends myConnection{
         this.tempat_lahir = tempat_lahir;
     }
 
-//    public Blob getFoto() {
-//        return foto;
-//    }
-
-//    public void setFoto(Blob foto) {
-//        this.foto = foto;
-//    }
-    
     public ArrayList<User> showData(){
         ArrayList<User> temp = new ArrayList<User>();
         try {
             stat = (Statement)connect.createStatement();
-            result = stat.executeQuery("SELECT * FROM users");
+            result = stat.executeQuery("SELECT * FROM user");
             while(result.next()){
                 User u = new User(
                         result.getString("username"),
                         result.getString("password"),
-                        result.getString("nama"),
+                        result.getString("nama"), 
                         result.getString("alamat"),
                         result.getString("nomor_telepon"),
-                        result.getDate("tanggal_lahir"),
                         result.getString("tempat_lahir")
-//                        result.getBlob("foto")
                 );
                 temp.add(u);
             }
@@ -149,7 +169,7 @@ public class User extends myConnection{
     
     public void insert(){
         try {
-            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?,?,?)");
+            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?,?)");
             
             sql.setString(1, getUsername());
             sql.setString(2, getPassword());
@@ -158,8 +178,6 @@ public class User extends myConnection{
             sql.setString(5, getNomor_telepon());
             sql.setDate(6, getTanggal_lahir());
             sql.setString(7, getTempat_lahir());
-//            sql.setBlob(8, getFoto());
-
             sql.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);

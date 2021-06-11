@@ -177,20 +177,20 @@
                 <span class="close">&times;</span>
             </div>
 
-            <form method="post" action="">
+            <form method="POST" action="login.jsp">
 
-                <input type="text" id="user" placeholder="Username"><br>
-                <input type="password" id="pass" placeholder="Password"><br>
+                <input type="text" id="user" name="username" placeholder="Username"><br>
+                <input type="password" id="pass" name="password" placeholder="Password"><br>
 
-                <label class="remember"><input type="checkbox"> Remember me </label><br>
+                <label><input type="checkbox"> Remember me </label><br>
 
-                <button type="submit" class="btn btn-success btn-primary" style="text-align: center;">Sign in</button>
+                <button class="btn btn-success btn-primary" style="text-align: center;" name="sign">Sign in</button>
             </form> 
 
             <div class="footer-home">
                 <h4>Belum memiliki akun?</h4>
                 <p>Ayo segera bergabung untuk melihat segala jenis properti!</p>
-                <button type="submit" class="btn btn-info"  onclick="window.location.href = 'register.jsp'">Register</button>
+                <button type="submit" class="btn btn-info" onclick="window.location.href = 'register.jsp'">Register</button>
             </div>
         </div>
 
