@@ -5,12 +5,14 @@
  */
 package com.myrental.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Acer
  */
 public class Properti {
-    private int id;
     private String nama;
     private String alamat;
     private String deskripsi;
@@ -20,4 +22,20 @@ public class Properti {
     private String status;
     private String tipe_properti;
     private int diskon;
+    private ArrayList<Foto> listFoto;
+
+    public Properti(String nama, String alamat, String deskripsi, double harga, double rating, String kota, String status, String tipe_properti, int diskon, ArrayList<Foto> listFoto) {
+        this.nama = nama;
+        this.alamat = alamat;
+        this.deskripsi = deskripsi;
+        this.harga = harga;
+        this.rating = rating;
+        this.kota = kota;
+        this.status = status;
+        this.tipe_properti = tipe_properti;
+        this.diskon = diskon;
+        this.listFoto = new ArrayList<Foto>();
+    }
+    
+    
 }

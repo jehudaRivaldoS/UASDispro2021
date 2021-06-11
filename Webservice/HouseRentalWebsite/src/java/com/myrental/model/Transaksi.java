@@ -10,6 +10,7 @@ import com.mysql.jdbc.Statement;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +28,8 @@ public class Transaksi extends myConnection{
     private int jumlah_orang;
     private String tipe_pembayaran;
     private String nomor_kartu;
-
+    private List<Foto> listFoto;
+    
     public Transaksi() {
         getConnect();
     }
@@ -42,6 +44,7 @@ public class Transaksi extends myConnection{
         this.jumlah_orang = jumlah_orang;
         this.tipe_pembayaran = tipe_pembayaran;
         this.nomor_kartu = nomor_kartu;
+        getConnect();
     }
 
     public int getId() {
