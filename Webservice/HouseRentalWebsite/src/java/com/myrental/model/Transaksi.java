@@ -28,7 +28,6 @@ public class Transaksi extends myConnection{
     private int jumlah_orang;
     private String tipe_pembayaran;
     private String nomor_kartu;
-    private List<Foto> listFoto;
     
     public Transaksi() {
         getConnect();
