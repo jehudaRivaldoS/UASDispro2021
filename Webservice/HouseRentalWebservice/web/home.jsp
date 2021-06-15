@@ -40,8 +40,8 @@
                         <div id="navbar-collapse-02" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="propClone"><a href="index.jsp">Utama</a></li>
-                                <li class="propClone"><a href="index.jsp">Reservasi Saya</a></li>
-                                <li class="propClone"><a href="index.jsp">Profil</a></li>
+                                <li class="propClone"><a href="reservasi.jsp">Reservasi Saya</a></li>
+                                <li class="propClone"><a href="profil.jsp">Profil</a></li>
                             </ul>
                         </div>
                     </div>
@@ -100,32 +100,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.productbox -->
-                    <div class="col-md-4">
-                        <div class="productbox">
-                            <div class="fadeshop">
-                                <div class="captionshop text-center" style="display: none;">
-                                    <h3>Item Name</h3>
-                                    <p>
-                                        This is a short excerpt to generally describe what the item is about.
-                                    </p>
-                                    <p>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Sewa</a>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Detail</a>
-                                    </p>
-                                </div>
-                                <span><img src="assets/images/rumah.jpg" class="pic" alt=""></span>
-                            </div>
-                            <div class="product-details">
-                                <a href="#">
-                                    <h1>Rumah Kaya</h1>
-                                </a>
-                                <span class="price">
-                                    <span class="edd_price">Rp5.000.000/tahun</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="underlined-title">
@@ -150,7 +124,45 @@
                                         This is a short excerpt to generally describe what the item is about.
                                     </p>
                                     <p>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Purchase</a>
+                                        <a href="tampilanRumah.jsp" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
+                                    </p>
+                                </div>
+                                <span><img src="assets/images/rumah.jpg" class="pic" alt=""></span>
+                            </div>
+                            <div class="product-details">
+                                <a href="#">
+                                    <h1>Rumah Kaya</h1>
+                                </a>
+                                <span class="price">
+                                    <span class="edd_price">Rp5.000.000/tahun</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="underlined-title">
+                    <div class="editContent">
+                        <h1 class="text-center latestitems">Properti Rental Di Surabaya</h1>
+                    </div>
+                    <div class="wow-hr type_short">
+                        <span class="wow-hr-h">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="productbox">
+                            <div class="fadeshop">
+                                <div class="captionshop text-center" style="display: none;">
+                                    <h3>Item Name</h3>
+                                    <p>
+                                        This is a short excerpt to generally describe what the item is about.
+                                    </p>
+                                    <p>
                                         <a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
                                     </p>
                                 </div>
@@ -166,48 +178,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.productbox -->
-                    <div class="col-md-4">
-                        <div class="productbox">
-                            <div class="fadeshop">
-                                <div class="captionshop text-center" style="display: none;">
-                                    <h3>Item Name</h3>
-                                    <p>
-                                        This is a short excerpt to generally describe what the item is about.
-                                    </p>
-                                    <p>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-shopping-cart"></i> Purchase</a>
-                                        <a href="#" class="learn-more detailslearn"><i class="fa fa-link"></i> Details</a>
-                                    </p>
-                                </div>
-                                <span><img src="assets/images/rumah2.jpg" class="pic" alt=""></span>
-                            </div>
-                            <div class="product-details">
-                                <a href="#">
-                                    <h1>Rumah Kaya</h1>
-                                </a>
-                                <span class="price">
-                                    <span class="edd_price">Rp10.000.000/tahun</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- CALL TO ACTION =============================-->
-        <section class="content-block" style="background-color:#00bba7;">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <div class="item" data-scrollreveal="enter top over 0.4s after 0.1s">
-                            <h1 class="callactiontitle"> Promote Items Area Give Discount to Buyers <span class="callactionbutton"><i class="fa fa-gift"></i> WOW24TH</span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- FOOTER =============================-->

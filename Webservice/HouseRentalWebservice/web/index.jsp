@@ -38,7 +38,9 @@
 
                         <div id="navbar-collapse-02" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="propClone"><a href="index.jsp">Home</a></li>				
+                                <li class="propClone"><a href="index.jsp">Home</a></li>
+                                <li class="propClone"><a href="home.jsp">Properti</a></li>
+                                <li class="propClone aktif"><a href="profil.jsp">Profil</a></li>	
                                 <li id="openBox"><a>Login</a></li>
                             </ul>
                         </div>
@@ -109,25 +111,28 @@
                         <input type="radio" name="next-btn" id="btn3"> 
                         <input type="radio" name="next-btn" id="btn4"> 
                         <div class="slide first">
+
                             <blockquote>              
-                                <p>1. Melakukan Login</p>
-                                <p>Jika belum memiliki akun, dapat melakukan pendaftaran. Setelah terbuat, tinggal klik login. Untuk login, ikutin tombol bulat di bawah ini.</p>
+                                <p style="text-align: center;">1. Melakukan Login</p>
+                                <p class="content">Jika belum memiliki akun, dapat melakukan pendaftaran. Setelah terbuat, tinggal klik login. Untuk login, ikutin tombol bulat di bawah ini.</p>
                                 <img src="assets/images/img1.png" width="200px" height="150px">
                             </blockquote>
                         </div>
 
                         <div class="slide">
                             <blockquote>              
-                                <p>2. Terlihat daftar rumah</p>
-                                <p>Pilih rumah yang ingin disewa. Dengan cara klik tampilan rumah tersebut.</p>
+                                <p style="text-align: center;">2. Terlihat daftar rumah</p>
+                                <p class="content">Pilih rumah yang ingin disewa. Dengan cara klik tampilan rumah tersebut.</p>
                                 <img src="assets/images/img2.png" width="200px" height="150px">
-                            </blockquote>     
+                            </blockquote>
+
                         </div>
 
                         <div class="slide">
+
                             <blockquote>              
-                                <p>3. Mengisi form penyewaan.</p>
-                                <p>Lengkapi form tersebut. Setelah itu, klik checkout.</p>
+                                <p style="text-align: center;">3. Mengisi form penyewaan.</p>
+                                <p class="content">Lengkapi form tersebut. Setelah itu, klik checkout.</p>
                                 <img src="assets/images/img5.png" width="200px" height="150px">
                             </blockquote>
 
@@ -135,27 +140,30 @@
 
                         <div class="slide">
                             <blockquote>              
-                                <p>4. Melakukan pembayaran.</p>
-                                <p>Pilih jenis pembayaran Anda. Lalu, klik submit untuk mengkonfirmasi pembayaran tersebut.</p>
+                                <p style="text-align: center;">4. Melakukan pembayaran.</p>
+                                <p class="content">Pilih jenis pembayaran Anda. Lalu, klik submit untuk mengkonfirmasi pembayaran tersebut.</p>
                                 <img src="assets/images/img3.png" width="200px" height="150px">
-                            </blockquote>    
+                            </blockquote>
+
                         </div>
 
                         <div class="slide">
                             <blockquote>              
-                                <p>5. Selesai.</p>
-                                <p>Jika proses berhasil, anda akan kembali ke halaman utama dan menerima info tentang rumah tersebut.</p>
+                                <p style="text-align: center;">5. Selesai.</p>
+                                <p class="content">Jika proses berhasil, anda akan kembali ke halaman utama dan menerima info tentang rumah tersebut.</p>
                                 <img src="assets/images/img6.png" width="200px" height="150px">
                             </blockquote>
+
                         </div>
 
                         <div class="slide">
                             <blockquote>              
-                                <div class="log">
-                                    <p>Silahkan masuk untuk mendapatkan penawaran yang menarik.</p>
-                                    <div class="btn btn-primary" id="openBox">Login</div>     
+                                <div class="log" style="text-align:center">
+                                    <p style="font-weight: bold; font-size:25px;">Segera masuk untuk mendapatkan penawaran yang menarik!</p>
+                                    <button type="button" class="btn btn-info" id="openBox">Login</button>     
                                 </div>  
-                            </blockquote>           
+                            </blockquote>
+
                         </div>
                     </div>
 
@@ -171,18 +179,18 @@
     </div>
     <!--Untuk modal login-->
     <div class="modal" id="mymodal">
-        <div class="content">
+        <div class="content-modal">
             <div class="content-header">
                 <h3>Login</h3>
                 <span class="close">&times;</span>
             </div>
 
-            <form method="POST" action="login.jsp">
+            <form method="POST" action="cekLogin.jsp">
 
                 <input type="text" id="user" name="username" placeholder="Username"><br>
                 <input type="password" id="pass" name="password" placeholder="Password"><br>
 
-                <label><input type="checkbox"> Remember me </label><br>
+                <label><input type="checkbox">Remember me</label><br>
 
                 <button class="btn btn-success btn-primary" style="text-align: center;" name="sign">Sign in</button>
             </form> 

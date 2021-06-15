@@ -13,7 +13,7 @@ import java.sql.Blob;
  *
  * @author Acer
  */
-public class Foto exten{
+public class Foto extends myConnection{
     private int id;
     private Properti properti;
     private Blob foto1;

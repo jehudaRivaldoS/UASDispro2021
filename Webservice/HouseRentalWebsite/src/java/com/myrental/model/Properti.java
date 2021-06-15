@@ -152,11 +152,17 @@ public class Properti extends myConnection {
         this.foto = foto;
     }
 
-    public ArrayList<Properti> showData() {
+    public ArrayList<Properti> showData(String key, String value) {
         ArrayList<Properti> temp = new ArrayList<Properti>();
         try {
             stat = (Statement) connect.createStatement();
-            result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.status, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id");
+            if (key.isEmpty() && value.isEmpty()){
+                result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.status, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id");
+            }
+            else{
+                result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.status, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id WHERE " + key + " LIKE %" + value + "%");
+            }
+            
             while (result.next()) {
                 //koneksinya ke class foto & properti
                 Foto f = new Foto(

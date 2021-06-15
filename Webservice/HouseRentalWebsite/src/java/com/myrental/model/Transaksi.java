@@ -18,7 +18,8 @@ import java.util.logging.Logger;
  *
  * @author Acer
  */
-public class Transaksi extends myConnection{
+public class Transaksi extends myConnection {
+
     private int id;
     private User username;
     private Properti properti;
@@ -28,7 +29,7 @@ public class Transaksi extends myConnection{
     private int jumlah_orang;
     private String tipe_pembayaran;
     private String nomor_kartu;
-    
+
     public Transaksi() {
         getConnect();
     }
@@ -117,19 +118,28 @@ public class Transaksi extends myConnection{
     public void setNomor_kartu(String nomor_kartu) {
         this.nomor_kartu = nomor_kartu;
     }
-    
 
-//    public ArrayList<Transaksi> showData(){
-//        ArrayList<Transaksi> temp = new ArrayList<Transaksi>();
-//        try {
-//            stat = (Statement)connect.createStatement();
-//            result = stat.executeQuery("SELECT * FROM riwayat_transaksi");
-//            while(result.next()){
-//                //koneksinya ke class user & properti
+    public ArrayList<Transaksi> showData() {
+        ArrayList<Transaksi> temp = new ArrayList<Transaksi>();
+        try {
+            stat = (Statement) connect.createStatement();
+            result = stat.executeQuery("SELECT rt.id, rt.properti_id, rt.harga, rt.tanggal_penyewaan, rt.durasi_sewa, rt.jumlah_orang, rt.tipe_pembayaran, rt.nomor_kartu u.username, u.password, u.nama, u.alamat, u.nomor_telepon FROM riwayat_transaksi");
+            while (result.next()) {
+                //koneksinya ke class transaksi & properti
+                ArrayList<Properti> prop = new Properti().showData("id", result.getString("properti_id"));
+                Properti p = prop.get(0);
+                
+                User u = new User(
+                        result.getString("username"),
+                        result.getString("password"),
+                        result.getString("nama"),
+                        result.getString("alamat"),
+                        result.getString("nomor_telpon")
+                );
 //                Transaksi t = new Transaksi(
 //                        result.getInt("id"),
-//                        result.getString("username"),
-//                        result.getString("properti_id"),
+//                        u,
+//                        p,
 //                        result.getDouble("harga"),
 //                        result.getDate("tanggal_penyewaan"),
 //                        result.getInt("durasi_sewa"),
@@ -137,29 +147,29 @@ public class Transaksi extends myConnection{
 //                        result.getString("nomor_kartu")
 //                );
 //                temp.add(t);
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return temp;
-//    }
-    
-//    public void insert(){
-//        try {
-//            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO riwayat_transaksi (username, properti_id, harga, tanggal_penyewaan, durasi_sewa, jumlah_orang, tipe_pembayaran, nomor_kartu) VALUES (?,?,?,?,?,?,?,?)");
-//            
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
+    }
+
+    public void insert() {
+        try {
+            PreparedStatement sql = (PreparedStatement) connect.prepareStatement("INSERT INTO riwayat_transaksi (username, properti_id, harga, tanggal_penyewaan, durasi_sewa, jumlah_orang, tipe_pembayaran, nomor_kartu) VALUES (?,?,?,?,?,?,?,?)");
+
 //            sql.setString(1, getUsername());
 //            sql.setString(2, getProperti());
-//            sql.setDouble(3, getHarga());
-//            sql.setDate(4, getTanggal_penyewaan());
-//            sql.setInt(5, getDurasi_sewa());
-//            sql.setInt(6, getJumlah_orang());
-//            sql.setString(7, getTipe_pembayaran());
-//            sql.setString(8, getNomor_kartu());
-//
-//            sql.executeUpdate();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+            sql.setDouble(3, getHarga());
+            sql.setDate(4, getTanggal_penyewaan());
+            sql.setInt(5, getDurasi_sewa());
+            sql.setInt(6, getJumlah_orang());
+            sql.setString(7, getTipe_pembayaran());
+            sql.setString(8, getNomor_kartu());
+
+            sql.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

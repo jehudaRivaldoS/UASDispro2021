@@ -18,6 +18,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
     </head>
     <body>
+        <!-- HEADER =============================-->
         <header class="item header margin-top-0">
             <div class="wrapper">
                 <nav role="navigation" class="navbar navbar-white navbar-embossed navbar-lg navbar-fixed-top">
@@ -27,30 +28,32 @@
                                 <i class="fa fa-bars"></i>
                                 <span class="sr-only">Toggle navigation</span>
                             </button>
-                            <a href="index.html" class="navbar-brand brand"> MyRental</a>    
-                        </div>  
+                            <a href="index.html" class="navbar-brand brand"> myRental </a>
+                        </div>
                         <div id="navbar-collapse-02" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="propClone"><a href="index.html">Home</a></li>				
-                                <li class="propClone"><a href="product.html">Daftar Rumah</a></li>
-                                <li class="propClone"><a href="checkout.html">Checkout</a></li>
-                                <li class="propClone"><a href="contact.html">Contact</a></li>
+                                <li class="propClone"><a href="index.jsp">Utama</a></li>
+                                <li class="propClone"><a href="home.jsp">Properti</a></li>
+                                <li class="propClone"><a href="reservasi.jsp">Reservasi Saya</a></li>
+                                <li class="propClone"><a href="profil.jsp">Profil</a></li>
                             </ul>
                         </div>
                     </div>
                 </nav>
-        </header>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="text-pageheader">
-                        <div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
-                            RUMAH AMAN
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="text-pageheader">
+                                <div class="subtext-image" data-scrollreveal="enter bottom over 1.7s after 0.0s">
+                                    Rumah Aman
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
+
 
         <section class="item content">
             <div class="container toparea">
@@ -79,28 +82,25 @@
                             </div>
                             <br/>
                             <div class="product-details text-left">
-                                    <ul class="unstyle">
-                                        <li><b class="propertyname">Alamat Rumah : </b> Jalan Sukaduka nomor 12, Surabaya</li>
-                                        <li><b class="propertyname">Harga per malam : </b> Rp 150.000</li>
-                                        <li><b class="propertyname">Fasilitas Rumah : </b> AC di setiap kamar, 2 kamar tidur, 1 kamar mandi, 1 garasi mobil, dan 1 taman</li>
-                                        <li><b class="propertyname">Deskripsi Rumah : </b> 200 m2, lantai 2, listrik memakai token, lokasi dekat kota</li>
-                                    </ul>
+                                <ul class="unstyle">
+                                    <li><b class="propertyname">Alamat Rumah : </b> Jalan Sukaduka nomor 12, Surabaya</li>
+                                    <li><b class="propertyname">Harga per malam : </b> Rp 150.000</li>
+                                    <li><b class="propertyname">Fasilitas Rumah : </b> AC di setiap kamar, 2 kamar tidur, 1 kamar mandi, 1 garasi mobil, dan 1 taman</li>
+                                    <li><b class="propertyname">Deskripsi Rumah : </b> 200 m2, lantai 2, listrik memakai token, lokasi dekat kota</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div>
-
-                            <form method="POST" action="pembayaran.jsp">
-                                <p>Form Cek in Sewa Rumah</p>
-                                <p>Nama : <input type="text"></p>
-                                <p>Alamat : <input type="text"></p>
-                                <p>Nomor Telepon : <input type="text"></p>
-                                <p>Inputkan Tanggal cek in : <input type="datetime-local"></p>
-                                <p>Inputkan Tanggal cek out : <input type="datetime-local"></p>
-                                <button type="Submit">Pesan</button>
-                            </form>
-                        </div>
+                        <form method="POST" action="pembayaran.jsp">
+                            <p>Form Cek in Sewa Rumah</p>
+                            <p>Nama : <input type="text"></p>
+                            <p>Alamat : <input type="text"></p>
+                            <p>Nomor Telepon : <input type="text"></p>
+                            <p>Inputkan Tanggal cek in : <input type="datetime-local"></p>
+                            <p>Inputkan Tanggal cek out : <input type="datetime-local"></p>
+                            <a href="#" class="btn btn-buynow">Pesan</a>
+                        </form>
                     </div>
                 </div>
                 <div>
