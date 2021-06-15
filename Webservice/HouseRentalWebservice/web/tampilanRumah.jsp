@@ -14,8 +14,12 @@
         <link href="assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
         <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/tampilanrumah.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     </head>
     <body>
         <!-- HEADER =============================-->
@@ -91,21 +95,36 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 form-pesan">
                         <form method="POST" action="pembayaran.jsp">
-                            <p>Form Cek in Sewa Rumah</p>
-                            <p>Nama : <input type="text"></p>
-                            <p>Alamat : <input type="text"></p>
-                            <p>Nomor Telepon : <input type="text"></p>
-                            <p>Inputkan Tanggal cek in : <input type="datetime-local"></p>
-                            <p>Inputkan Tanggal cek out : <input type="datetime-local"></p>
-                            <a href="#" class="btn btn-buynow">Pesan</a>
+                            <p>Ingin menyewa properti ini?</p>
+                            <div class="form-group">
+                                <label for="nama">Nama</label>
+                                <input type="text" class="form-control" id="nama">
+                            </div>
+                            <div class="form-group">
+                                <label for="almt">Alamat</label>
+                                <input type="text" class="form-control" id="almt">
+                            </div>
+                            <div class="form-group">
+                                <label for="tlpn">Nomor Telepon:</label>
+                                <input type="text" class="form-control" id="tlpn">
+                            </div>
+                            <div class="form-group"> <!-- Date input -->
+                                <label class="control-label" for="date">Date</label>
+                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="durasi">Durasi Sewa (hari)</label>
+                                <input type="number" class="form-control" min=1 id="durasi" name="durasi" value=1>
+                            </div>
+                            <div class="form-group">
+                                <label for="tamu">Jumlah Tamu (orang)</label>
+                                <input type="number" class="form-control" min=1 name="tamu" id="tamu" value=1>
+                            </div>
+                            <a href="cekFormInput.jsp" class="btn btn-buynow">Pesan</a>
                         </form>
                     </div>
-                </div>
-                <div>
-                    <P> </P>
-                    <br>
                 </div>
             </div>
             <div class="footer text-center">
@@ -129,5 +148,18 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            $(document).ready(function () {
+                var date_input = $('input[name="date"]'); //our date input has the name "date"
+                var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+                date_input.datepicker({
+                    format: 'mm/dd/yyyy',
+                    container: container,
+                    todayHighlight: true,
+                    autoclose: true,
+                })
+            })
+        </script>
     </body>
 </html>
