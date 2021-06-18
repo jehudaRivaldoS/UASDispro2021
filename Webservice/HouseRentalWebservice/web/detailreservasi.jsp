@@ -1,4 +1,12 @@
 <%-- 
+    Document   : detailreservasi
+    Created on : Jun 19, 2021, 2:12:42 AM
+    Author     : Acer
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%-- 
     Document   : pembayaran
     Created on : Jun 4, 2021, 6:12:56 PM
     Author     : Acer

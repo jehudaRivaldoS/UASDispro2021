@@ -26,24 +26,10 @@ public class User extends myConnection{
     private String tanggal_lahir;
     private String tempat_lahir;
 
-   
-    
     public User() {
         getConnect();
     }
     
-    public User(String username, String password, String nama, String alamat, String nomor_telepon, String tanggal_lahir, String tempat_lahir, Blob foto) {
-        this.username = username;
-        this.password = password;
-        this.nama = nama;
-        this.alamat = alamat;
-        this.nomor_telepon = nomor_telepon;
-        this.tanggal_lahir = tanggal_lahir;
-        this.tempat_lahir = tempat_lahir;
-        getConnect();
-        
-    }
-
     public User(String username, String password, String nama, String alamat, String nomor_telepon, String tanggal_lahir, String tempat_lahir) {
         this.username = username;
         this.password = password;
@@ -53,6 +39,7 @@ public class User extends myConnection{
         this.tanggal_lahir = tanggal_lahir;
         this.tempat_lahir = tempat_lahir;
         getConnect();
+        
     }
     
     public User(String username, String password, String nama, String alamat, String nomor_telepon) {
@@ -152,7 +139,12 @@ public class User extends myConnection{
             while(result.next()){
                 User u = new User(
                         result.getString("username"),
-                        result.getString("password")
+                        result.getString("password"),
+                        result.getString("nama"),
+                        result.getString("alamat"),
+                        result.getString("nomor_telpon"),
+                        result.getString("tempat_lahir"),
+                        result.getString("tanggal_lahir")
                 );
                 temp.add(u);
             }
@@ -164,7 +156,7 @@ public class User extends myConnection{
     
     public void insert(){
         try {
-            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO user (`username`, `password`, `nama`, `alamat`, `nomor_telpon`, `tanggal_lahir`, `tempat_lahir`) VALUES (?,?,?,?,?,?,?);");
+            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO user (username, password, nama, alamat, nomor_telpon, tanggal_lahir, tempat_lahir) VALUES (?,?,?,?,?,?,?);");
             
             sql.setString(1, getUsername());
             sql.setString(2, getPassword());

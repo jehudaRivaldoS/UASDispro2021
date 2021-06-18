@@ -4,7 +4,7 @@
     Author     : Acer
 --%>
 
-    <%-- start web service invocation --%><hr/>
+
     <%-- start web service invocation --%><hr/>
     <%
     try {
@@ -14,9 +14,14 @@
 	java.lang.String username = request.getParameter("username");
 	java.lang.String password = request.getParameter("password");
 	// TODO process result here
-	java.lang.String result = port.checkLogin(username, password);
-	if(result.equals("Sukses")){
-            response.sendRedirect("home.jsp");
+	com.myrental.User result = port.checkLogin(username, password);
+	if(result != null){
+            session.setAttribute("user", result);
+            response.sendRedirect("index.jsp");
+        }
+        else{
+            session.setAttribute("Error", "Username/password Anda salah!");
+            response.sendRedirect("index.jsp");
         }
     } catch (Exception ex) {
 	// TODO handle custom exceptions here
@@ -24,4 +29,3 @@
     %>
     <%-- end web service invocation --%><hr/>
 
-    <%-- end web service invocation --%><hr/>

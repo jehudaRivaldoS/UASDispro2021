@@ -54,8 +54,7 @@ public class UserService {
      * Web service operation
      */
     @WebMethod(operationName = "checkLogin")
-    public String checkLogin(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
-        String result = "";
+    public User checkLogin(@WebParam(name = "username") String username, @WebParam(name = "password") String password) {
         for (User u : model.showData()) {
             //Mengambil username dan password
             String usernm = u.getUsername();
@@ -63,13 +62,10 @@ public class UserService {
 
             //Proses authentikasi
             if (usernm.equals(username) && passwd.equals(password)) {
-                result = "Sukses";
-                break;
-            } else {
-                result = "Gagal";
+                return u;
             }
         }
-        return result;
+        return null;
     }
     
      /**
@@ -78,7 +74,6 @@ public class UserService {
     @WebMethod(operationName = "display")
     public ArrayList<User> display() {
         //TODO write your implementation code here:
-        User us = new User();
-        return us.showData();
+        return model.showData();
     }
 }

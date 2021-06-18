@@ -5,6 +5,7 @@
  */
 package com.myrental.model;
 
+import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import java.sql.Date;
@@ -21,22 +22,24 @@ import java.util.logging.Logger;
 public class Transaksi extends myConnection {
 
     private int id;
-    private User username;
+    private User user;
     private Properti properti;
-    private double harga;
-    private Date tanggal_penyewaan;
+    private int harga;
+    private String tanggal_penyewaan;
     private int durasi_sewa;
     private int jumlah_orang;
     private String tipe_pembayaran;
     private String nomor_kartu;
+    private String catatan;
+    private int status;
 
     public Transaksi() {
         getConnect();
     }
 
-    public Transaksi(int id, User username, Properti properti, double harga, Date tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu) {
+    public Transaksi(int id, User user, Properti properti, int harga, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu, int status) {
         this.id = id;
-        this.username = username;
+        this.user = user;
         this.properti = properti;
         this.harga = harga;
         this.tanggal_penyewaan = tanggal_penyewaan;
@@ -44,7 +47,94 @@ public class Transaksi extends myConnection {
         this.jumlah_orang = jumlah_orang;
         this.tipe_pembayaran = tipe_pembayaran;
         this.nomor_kartu = nomor_kartu;
+        this.status = status;
         getConnect();
+    }
+
+    public Transaksi(int id, User user, Properti properti, int harga, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu, String catatan, int status) {
+        this.id = id;
+        this.user = user;
+        this.properti = properti;
+        this.harga = harga;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        this.tipe_pembayaran = tipe_pembayaran;
+        this.nomor_kartu = nomor_kartu;
+        this.catatan = catatan;
+        this.status = status;
+        getConnect();
+    }
+
+    public Transaksi(User user, Properti properti, int harga, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu, String catatan, int status) {
+        this.user = user;
+        this.properti = properti;
+        this.harga = harga;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        this.tipe_pembayaran = tipe_pembayaran;
+        this.nomor_kartu = nomor_kartu;
+        this.catatan = catatan;
+        this.status = status;
+        getConnect();
+    }
+
+    public Transaksi(User user, Properti properti, int harga, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu, int status) {
+        this.user = user;
+        this.properti = properti;
+        this.harga = harga;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        this.tipe_pembayaran = tipe_pembayaran;
+        this.nomor_kartu = nomor_kartu;
+        this.status = status;
+        getConnect();
+    }
+
+    public Transaksi(int harga, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang, String tipe_pembayaran, String nomor_kartu, String catatan, int status) {
+        this.harga = harga;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        this.tipe_pembayaran = tipe_pembayaran;
+        this.nomor_kartu = nomor_kartu;
+        this.catatan = catatan;
+        this.status = status;
+        getConnect();
+    }
+
+    public Transaksi(User user, Properti properti, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang) {
+        this.user = user;
+        this.properti = properti;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        getConnect();
+    }
+
+    public Transaksi(Properti properti, String tanggal_penyewaan, int durasi_sewa, int jumlah_orang) {
+        this.properti = properti;
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        getConnect();
+    }
+
+    public Transaksi(String tanggal_penyewaan, int durasi_sewa, int jumlah_orang) {
+        this.tanggal_penyewaan = tanggal_penyewaan;
+        this.durasi_sewa = durasi_sewa;
+        this.jumlah_orang = jumlah_orang;
+        getConnect();
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
     }
 
     public int getId() {
@@ -55,12 +145,12 @@ public class Transaksi extends myConnection {
         this.id = id;
     }
 
-    public User getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(User username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Properti getProperti() {
@@ -71,19 +161,19 @@ public class Transaksi extends myConnection {
         this.properti = properti;
     }
 
-    public double getHarga() {
+    public int getHarga() {
         return harga;
     }
 
-    public void setHarga(double harga) {
+    public void setHarga(int harga) {
         this.harga = harga;
     }
 
-    public Date getTanggal_penyewaan() {
+    public String getTanggal_penyewaan() {
         return tanggal_penyewaan;
     }
 
-    public void setTanggal_penyewaan(Date tanggal_penyewaan) {
+    public void setTanggal_penyewaan(String tanggal_penyewaan) {
         this.tanggal_penyewaan = tanggal_penyewaan;
     }
 
@@ -119,16 +209,46 @@ public class Transaksi extends myConnection {
         this.nomor_kartu = nomor_kartu;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public ArrayList<Transaksi> showData() {
         ArrayList<Transaksi> temp = new ArrayList<Transaksi>();
         try {
             stat = (Statement) connect.createStatement();
-            result = stat.executeQuery("SELECT rt.id, rt.properti_id, rt.harga, rt.tanggal_penyewaan, rt.durasi_sewa, rt.jumlah_orang, rt.tipe_pembayaran, rt.nomor_kartu u.username, u.password, u.nama, u.alamat, u.nomor_telepon FROM riwayat_transaksi");
+            result = stat.executeQuery("SELECT rt.id AS rt_id, rt.properti_id, rt.harga, rt.tanggal_penyewaan, rt.durasi_sewa, rt.jumlah_orang, rt.tipe_pembayaran, rt.nomor_kartu, rt.status, rt.catatan, "
+                    + "u.username, u.password, u.nama, u.alamat, u.nomor_telpon, "
+                    + "p.nama AS p_nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.tipe_properti, "
+                    + "f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 "
+                    + "FROM riwayat_transaksi rt INNER JOIN user u ON u.username = rt.username "
+                    + "INNER JOIN properti p ON p.id = rt.properti_id "
+                    + "INNER JOIN foto f ON f.id = p.id");
             while (result.next()) {
                 //koneksinya ke class transaksi & properti
-                ArrayList<Properti> prop = new Properti().showData("id", result.getString("properti_id"));
-                Properti p = prop.get(0);
-                
+                Foto f = new Foto(
+                        (Blob) result.getBlob("foto1"),
+                        (Blob) result.getBlob("foto2"),
+                        (Blob) result.getBlob("foto3"),
+                        (Blob) result.getBlob("foto4")
+                );
+
+                Properti p = new Properti(
+                        result.getInt("properti_id"),
+                        result.getString("p_nama"),
+                        result.getString("alamat"),
+                        result.getString("deskripsi"),
+                        result.getInt("harga"),
+                        result.getDouble("rating"),
+                        result.getString("kota"),
+                        result.getString("tipe_properti"),
+                        f
+                );
+
                 User u = new User(
                         result.getString("username"),
                         result.getString("password"),
@@ -136,17 +256,20 @@ public class Transaksi extends myConnection {
                         result.getString("alamat"),
                         result.getString("nomor_telpon")
                 );
-//                Transaksi t = new Transaksi(
-//                        result.getInt("id"),
-//                        u,
-//                        p,
-//                        result.getDouble("harga"),
-//                        result.getDate("tanggal_penyewaan"),
-//                        result.getInt("durasi_sewa"),
-//                        result.getString("tipe_pembayaran"),
-//                        result.getString("nomor_kartu")
-//                );
-//                temp.add(t);
+                Transaksi t = new Transaksi(
+                        result.getInt("rt_id"),
+                        u,
+                        p,
+                        result.getInt("harga"),
+                        result.getString("tanggal_penyewaan"),
+                        result.getInt("durasi_sewa"),
+                        result.getInt("jumlah_orang"),
+                        result.getString("tipe_pembayaran"),
+                        result.getString("nomor_kartu"),
+                        result.getString("catatan"),
+                        result.getInt("status")
+                );
+                temp.add(t);
             }
         } catch (Exception ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,22 +277,49 @@ public class Transaksi extends myConnection {
         return temp;
     }
 
-    public void insert() {
+    public String insert(String username, int id) {
         try {
-            PreparedStatement sql = (PreparedStatement) connect.prepareStatement("INSERT INTO riwayat_transaksi (username, properti_id, harga, tanggal_penyewaan, durasi_sewa, jumlah_orang, tipe_pembayaran, nomor_kartu) VALUES (?,?,?,?,?,?,?,?)");
+            if (!connect.isClosed()) {
+                PreparedStatement sql = (PreparedStatement) connect.prepareStatement("INSERT INTO riwayat_transaksi (username, properti_id, harga, tanggal_penyewaan, durasi_sewa, jumlah_orang, tipe_pembayaran, nomor_kartu, catatan, status) VALUES (?,?,?,?,?,?,?,?,?,?)");
 
-//            sql.setString(1, getUsername());
-//            sql.setString(2, getProperti());
-            sql.setDouble(3, getHarga());
-            sql.setDate(4, getTanggal_penyewaan());
-            sql.setInt(5, getDurasi_sewa());
-            sql.setInt(6, getJumlah_orang());
-            sql.setString(7, getTipe_pembayaran());
-            sql.setString(8, getNomor_kartu());
+                sql.setString(1, username);
+                sql.setInt(2, id);
+                sql.setInt(3, getHarga());
+                sql.setString(4, getTanggal_penyewaan());
+                sql.setInt(5, getDurasi_sewa());
+                sql.setInt(6, getJumlah_orang());
+                sql.setString(7, getTipe_pembayaran());
+                sql.setString(8, getNomor_kartu());
+                sql.setString(9, getCatatan());
+                sql.setInt(10, getStatus());
 
-            sql.executeUpdate();
+                int result = sql.executeUpdate();
+                if (result > -1) {
+                    return "Success";
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return "Gagal";
+    }
+
+    public String update(int status, int id) {
+        try {
+            if (!connect.isClosed()) {
+                PreparedStatement sql = (PreparedStatement) connect.prepareStatement("UPDATE riwayat_transaksi SET status = ? WHERE id= ?");
+
+                sql.setInt(1, status);
+                sql.setInt(2, id);
+
+                int result = sql.executeUpdate();
+                if (result > -1) {
+                    return "Success";
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Gagal";
     }
 }

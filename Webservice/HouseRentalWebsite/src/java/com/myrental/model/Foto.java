@@ -5,9 +5,7 @@
  */
 package com.myrental.model;
 
-import java.sql.Blob;
-
-
+import com.mysql.jdbc.Blob;
 
 /**
  *
@@ -22,6 +20,7 @@ public class Foto extends myConnection{
     private Blob foto4;
 
     public Foto() {
+        getConnect();
     }
 
     public Foto(int id, Properti properti, Blob foto1, Blob foto2, Blob foto3, Blob foto4) {
@@ -30,6 +29,7 @@ public class Foto extends myConnection{
         this.foto2 = foto2;
         this.foto3 = foto3;
         this.foto4 = foto4;
+        getConnect();
     }
 
     public Foto(Blob foto1, Blob foto2, Blob foto3, Blob foto4) {
@@ -37,6 +37,7 @@ public class Foto extends myConnection{
         this.foto2 = foto2;
         this.foto3 = foto3;
         this.foto4 = foto4;
+        getConnect();
     }
     
 

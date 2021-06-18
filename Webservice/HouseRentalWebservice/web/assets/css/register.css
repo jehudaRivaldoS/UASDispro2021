@@ -1,7 +1,6 @@
 body{
-    color:#555;
-    height: 100vh;	
-    font:normal 13px/22px Montserrat;	
+    height: 100%;	
+    font:Montserrat;	
     margin: 0px;
     background-image:url(../images/homeimg.jpg);
 }
@@ -32,12 +31,26 @@ input, #alamat{
     margin: 10px; 
     font-family: Montserrat;
     padding: 5px;
-    width: 450px;
+    width: 80% !important;
 }
 form{
     padding-bottom: 50px;
     text-align: center;
     clear: both;
+}
+form-register{
+    padding-bottom: 50px;
+    text-align: center;
+    clear: both;
+}
+
+form-register input{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+  padding: 5px; 
+  clear: both;
+  width:80%;
 }
 .button-content {
     text-align: center;
@@ -49,15 +62,70 @@ form{
     outline: none;
     line-height: 1.5;
     cursor: pointer;
-    margin-left: 120px;
     margin-top: 20px;
     width: 100px;
 }
-.back{
-    margin-left: 50px;
-}
+
 h3{
     text-align: center;
+}
+
+/* form login */
+#blur.active{
+  filter: blur(10px);
+}
+#blur.pasif{
+  filter: none;
+}
+.modal{
+  transition: opacity .25s ease-in-out;
+  display: none;
+  padding:auto;
+  margin:auto;
+  z-index: 999;
+  width: 50%;
+  height: 500px;
+  position: fixed;
+  background-color: whitesmoke;
+  border-radius: 25px;
+  box-shadow: 0px 0px 10px #848484;
+}
+.content-header{
+    margin: 40px 0px 0px 0px ;
+}
+
+.content{
+      text-align: justify;
+}
+
+.content-modal{
+      text-align: center;
+}
+
+form input{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Montserrat;
+  padding: 5px; 
+  clear: both;
+  width:80%;
+}
+form{
+ padding-bottom: 50px;
+}
+.close{
+  color: #aaa;
+  float: right;
+  font-size: 45px;
+  font-weight: bold;
+  margin-top: -50px;
+  margin-right: 20px;
+  
+}
+.close:hover, .close:focus{
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 

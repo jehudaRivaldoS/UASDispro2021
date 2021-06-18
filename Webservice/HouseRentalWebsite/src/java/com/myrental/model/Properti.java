@@ -5,9 +5,10 @@
  */
 package com.myrental.model;
 
+import  com.mysql.jdbc.Blob;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-import java.sql.Blob;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +25,17 @@ public class Properti extends myConnection {
     private String nama;
     private String alamat;
     private String deskripsi;
-    private double harga;
+    private int harga;
     private double rating;
     private String kota;
-    private String status;
     private String tipe_properti;
-    private int diskon;
-    private Foto foto;
+    Foto foto;
 
     public Properti() {
         getConnect();
     }
 
-    public Properti(int id, String nama, String alamat, String deskripsi, double harga, double rating, String kota, String status, String tipe_properti, Foto foto, Blob foto1, Blob foto2, Blob foto3, Blob foto4) {
+    public Properti(int id, String nama, String alamat, String deskripsi, int harga, double rating, String kota, String status, String tipe_properti, Foto foto, Blob foto1, Blob foto2, Blob foto3, Blob foto4) {
         this.id = id;
         this.nama = nama;
         this.alamat = alamat;
@@ -44,13 +43,12 @@ public class Properti extends myConnection {
         this.harga = harga;
         this.rating = rating;
         this.kota = kota;
-        this.status = status;
         this.tipe_properti = tipe_properti;
-        this.diskon = diskon;
         this.foto = new Foto(foto1, foto2, foto3, foto4);
+        getConnect();
     }
 
-    public Properti(int id, String nama, String alamat, String deskripsi, double harga, double rating, String kota, String status, String tipe_properti, Foto foto) {
+    public Properti(int id, String nama, String alamat, String deskripsi, int harga, double rating, String kota, String tipe_properti, Foto foto) {
         this.id = id;
         this.nama = nama;
         this.alamat = alamat;
@@ -58,11 +56,23 @@ public class Properti extends myConnection {
         this.harga = harga;
         this.rating = rating;
         this.kota = kota;
-        this.status = status;
         this.tipe_properti = tipe_properti;
-        this.diskon = diskon;
-        this.foto = new Foto();
+        this.foto = foto;
+        getConnect();
     }
+    
+     public Properti(int id, String nama, String alamat, String deskripsi, int harga, double rating, String kota, String tipe_properti) {
+        this.id = id;
+        this.nama = nama;
+        this.alamat = alamat;
+        this.deskripsi = deskripsi;
+        this.harga = harga;
+        this.rating = rating;
+        this.kota = kota;
+        this.tipe_properti = tipe_properti;
+        getConnect();
+    }
+    
 
     public int getId() {
         return id;
@@ -96,11 +106,11 @@ public class Properti extends myConnection {
         this.deskripsi = deskripsi;
     }
 
-    public double getHarga() {
+    public int getHarga() {
         return harga;
     }
 
-    public void setHarga(double harga) {
+    public void setHarga(int harga) {
         this.harga = harga;
     }
 
@@ -120,28 +130,12 @@ public class Properti extends myConnection {
         this.kota = kota;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getTipe_properti() {
         return tipe_properti;
     }
 
     public void setTipe_properti(String tipe_properti) {
         this.tipe_properti = tipe_properti;
-    }
-
-    public int getDiskon() {
-        return diskon;
-    }
-
-    public void setDiskon(int diskon) {
-        this.diskon = diskon;
     }
 
     public Foto getFoto() {
@@ -152,24 +146,19 @@ public class Properti extends myConnection {
         this.foto = foto;
     }
 
-    public ArrayList<Properti> showData(String key, String value) {
+    public ArrayList<Properti> showData() {
         ArrayList<Properti> temp = new ArrayList<Properti>();
         try {
             stat = (Statement) connect.createStatement();
-            if (key.isEmpty() && value.isEmpty()){
-                result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.status, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id");
-            }
-            else{
-                result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.status, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id WHERE " + key + " LIKE %" + value + "%");
-            }
-            
+            result = stat.executeQuery("SELECT p.id, p.nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.tipe_properti, f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 FROM properti p INNER JOIN foto f ON p.id = f.properti_id");
+
             while (result.next()) {
                 //koneksinya ke class foto & properti
                 Foto f = new Foto(
-                        result.getBlob("foto1"),
-                        result.getBlob("foto2"),
-                        result.getBlob("foto3"),
-                        result.getBlob("foto4")
+                        (Blob)result.getBlob("foto1"),
+                        (Blob)result.getBlob("foto2"),
+                        (Blob)result.getBlob("foto3"),
+                        (Blob)result.getBlob("foto4")
                 );
 
                 Properti p = new Properti(
@@ -177,10 +166,9 @@ public class Properti extends myConnection {
                         result.getString("nama"),
                         result.getString("alamat"),
                         result.getString("deskripsi"),
-                        result.getDouble("harga"),
+                        result.getInt("harga"),
                         result.getDouble("rating"),
                         result.getString("kota"),
-                        result.getString("status"),
                         result.getString("tipe_properti"),
                         f
                 );

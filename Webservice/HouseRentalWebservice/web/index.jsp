@@ -17,7 +17,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="assets/css/home.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/index.css">
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     </style>
 </head>
@@ -38,10 +38,17 @@
 
                         <div id="navbar-collapse-02" class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="propClone"><a href="index.jsp">Home</a></li>
                                 <li class="propClone"><a href="home.jsp">Properti</a></li>
-                                <li class="propClone aktif"><a href="profil.jsp">Profil</a></li>	
+
+                                <% if (session.getAttribute("user") != null) {%>
+                                <li class="propClone"><a href="reservasi.jsp">Reservasi Saya</a></li>
+                                <li class="propClone"><a href="logout.jsp">Logout</a></li>
+                                    <%}%>
+
+                                <% if (session.getAttribute("user") == null) {%>
                                 <li id="openBox"><a>Login</a></li>
+                                    <%}%>
+
                             </ul>
                         </div>
                     </div>
@@ -176,6 +183,27 @@
                 </div>
             </div>
         </section>
+        <!-- FOOTER =============================-->
+        <div class="footer text-center">
+            <div class="container">
+                <div class="row">
+                    <p class="footernote">
+                        Connect with myRental
+                    </p>
+                    <ul class="social-iconsfooter">
+                        <li><a href="#"><i class="fa fa-phone"></i></a></li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                    </ul>
+                    <p>
+                        &copy; 2021 myRental<br/>
+                        Scorilo - Free template by <a href="https://www.wowthemes.net/">WowThemesNet</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
     <!--Untuk modal login-->
     <div class="modal" id="mymodal">
@@ -190,8 +218,6 @@
                 <input type="text" id="user" name="username" placeholder="Username"><br>
                 <input type="password" id="pass" name="password" placeholder="Password"><br>
 
-                <label><input type="checkbox">Remember me</label><br>
-
                 <button class="btn btn-success btn-primary" style="text-align: center;" name="sign">Sign in</button>
             </form> 
 
@@ -204,58 +230,43 @@
 
     </div>
 
-    <!-- FOOTER =============================-->
-    <div class="footer text-center" id="blur">
-        <div class="container">
-            <div class="row">
-                <p class="footernote">
-                    Connect with myRental
-                </p>
-                <ul class="social-iconsfooter">
-                    <li><a href="#"><i class="fa fa-phone"></i></a></li>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                </ul>
-                <p>
-                    &copy; 2021 myRental<br/>
-                    Scorilo - Free template by <a href="https://www.wowthemes.net/">WowThemesNet</a>
-                </p>
-            </div>
-        </div>
-    </div>
 
+
+    <% if (session.getAttribute("Error") != null) {%>
+    <script>alert("<%=session.getAttribute("Error")%>");</script>
+    <%  session.removeAttribute("Error");
+        }%>
     <script src="assets/js/jquery-.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/anim.js"></script>
     <script type="text/javascript">
-                    var modal = document.getElementById("mymodal");
-                    var btn = document.getElementById("openBox");
-                    var spn = document.getElementsByClassName("close")[0];
-                    var outofsight = document.getElementById("blur");
+        var modal = document.getElementById("mymodal");
+        var btn = document.getElementById("openBox");
+        var spn = document.getElementsByClassName("close")[0];
+        var outofsight = document.getElementById("blur");
 
-                    btn.onclick = function () {
-                        modal.style.display = "block";
-                        outofsight.classList.remove("pasif");
-                        outofsight.classList.add("active");
+        btn.onclick = function () {
+            modal.style.display = "block";
+            outofsight.classList.remove("pasif");
+            outofsight.classList.add("active");
+        }
+        spn.onclick = function () {
+            modal.style.display = "none";
+            outofsight.classList.remove("active");
+            outofsight.classList.add("pasif");
+        }
+        //----HOVER CAPTION---//	  
+        jQuery(document).ready(function ($) {
+            $('.fadeshop').hover(
+                    function () {
+                        $(this).find('.captionshop').fadeIn(150);
+                    },
+                    function () {
+                        $(this).find('.captionshop').fadeOut(150);
                     }
-                    spn.onclick = function () {
-                        modal.style.display = "none";
-                        outofsight.classList.remove("active");
-                        outofsight.classList.add("pasif");
-                    }
-                    //----HOVER CAPTION---//	  
-                    jQuery(document).ready(function ($) {
-                        $('.fadeshop').hover(
-                                function () {
-                                    $(this).find('.captionshop').fadeIn(150);
-                                },
-                                function () {
-                                    $(this).find('.captionshop').fadeOut(150);
-                                }
-                        );
-                    });
+            );
+        });
+
     </script>
 </body>
 </html>

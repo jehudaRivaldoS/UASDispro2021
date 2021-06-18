@@ -5,6 +5,7 @@
  */
 package com.myrental;
 
+import com.myrental.model.Properti;
 import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -17,12 +18,20 @@ import javax.jws.WebParam;
 @WebService(serviceName = "PropertiService")
 public class PropertiService {
 
+    Properti model;
+
+    public PropertiService() {
+        model = new Properti();
+    }
+
     /**
      * Web service operation
+     *
+     * @return
      */
-    @WebMethod(operationName = "showData")
-    public ArrayList showData() {
+    @WebMethod(operationName = "showDataProp")
+    public ArrayList<Properti> showDataProp() {
         //TODO write your implementation code here:
-        return null;
+        return model.showData();
     }
 }

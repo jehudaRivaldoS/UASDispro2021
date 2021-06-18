@@ -26,38 +26,6 @@
             <isset property="conf.dir"/>
         </condition>
     </target>
-    <target name="wsimport-client-TransaksiService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/TransaksiService" destdir="${build.generated.dir}/jax-wsCache/TransaksiService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebsite/TransaksiService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/HouseRentalWebsite/TransaksiService?wsdl" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebsite/TransaksiService.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/TransaksiService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-TransaksiService" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/com/myrental"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
-    </target>
-    <target name="wsimport-client-PropertiService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/PropertiService" destdir="${build.generated.dir}/jax-wsCache/PropertiService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebsite/PropertiService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/HouseRentalWebsite/PropertiService?wsdl" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebsite/PropertiService.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/PropertiService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-PropertiService" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/com/myrental"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
-    </target>
     <target name="wsimport-client-UserService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/UserService"/>
         <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/UserService" destdir="${build.generated.dir}/jax-wsCache/UserService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/UserService/wsdl/localhost_8080/HouseRentalWebservice/UserService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/HouseRentalWebservice/UserService?wsdl" xnocompile="true" xendorsed="true">
@@ -74,5 +42,37 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/com/myrental"/>
         <delete dir="${build.generated.dir}/jax-wsCache/UserService"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-TransaksiService, wsimport-client-PropertiService, wsimport-client-UserService"/>
+    <target name="wsimport-client-TransaksiService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/TransaksiService" destdir="${build.generated.dir}/jax-wsCache/TransaksiService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/HouseRentalWebservice/TransaksiService?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/TransaksiService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-TransaksiService" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/myrental"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/TransaksiService"/>
+    </target>
+    <target name="wsimport-client-PropertiService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/PropertiService" destdir="${build.generated.dir}/jax-wsCache/PropertiService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebservice/PropertiService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/HouseRentalWebservice/PropertiService?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebservice/PropertiService.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/PropertiService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-PropertiService" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/com/myrental"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/PropertiService"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-UserService, wsimport-client-TransaksiService, wsimport-client-PropertiService"/>
 </project>
