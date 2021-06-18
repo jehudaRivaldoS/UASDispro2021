@@ -236,6 +236,8 @@
     <script>alert("<%=session.getAttribute("Error")%>");</script>
     <%  session.removeAttribute("Error");
         }%>
+        
+        
     <script src="assets/js/jquery-.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/anim.js"></script>

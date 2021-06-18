@@ -17,6 +17,8 @@
 	com.myrental.User result = port.checkLogin(username, password);
 	if(result != null){
             session.setAttribute("user", result);
+            session.removeAttribute("properti");
+            session.removeAttribute("transaksi");
             response.sendRedirect("index.jsp");
         }
         else{

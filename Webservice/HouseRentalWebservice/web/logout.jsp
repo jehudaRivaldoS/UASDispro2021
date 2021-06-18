@@ -9,6 +9,8 @@
     <%
     try {
 	session.removeAttribute("user");
+        session.removeAttribute("properti");
+        session.removeAttribute("transaksi");
         response.sendRedirect("index.jsp");
     } catch (Exception ex) {
 	// TODO handle custom exceptions here

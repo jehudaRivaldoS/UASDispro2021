@@ -89,6 +89,7 @@
                         java.util.List<com.myrental.Transaksi> result = port.show(username);
                         if (!result.isEmpty()) {
                             for (com.myrental.Transaksi t : result) {
+                                int id = t.getId();
                                 String nama = t.getProperti().getNama();
                                 String total = String.format("%,d\n", t.getHarga());
                                 LocalDate tglChkIn = LocalDate.parse(t.getTanggalPenyewaan());
@@ -111,7 +112,7 @@
                                     }
                                 }
                     %>
-                    <form id="edd_checkout_cart_form" method="post">
+                    <form id="edd_checkout_cart_form" method="post" action="detailreservasi.jsp">
                         <div id="edd_checkout_cart_wrap">
                             <table id="edd_checkout_cart" class="ajaxed">
                                 <thead>
@@ -140,9 +141,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <input type="hidden" name="id" value=<%=id%>>
                                     <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
                                         <td class="edd_cart_item_name">
-                                            <span class="edd_checkout_cart_item_title"><%=nama%></span>
+                                            <button nameclass="btn-link"><%=nama%></button>
                                         </td>
                                         <td class="edd_cart_item_price">
                                             Rp<%=total%>/malam

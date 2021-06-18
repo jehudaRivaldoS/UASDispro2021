@@ -22,6 +22,8 @@
         String catatan = request.getParameter("catatan");
         int status = 0;
         String result = port.add(u.getUsername(), p.getId(), total, tanggal, durasi, jumlah_orang, tipeBayar, nomorKartu, catatan, status);
+        session.removeAttribute("properti");
+        session.removeAttribute("transaksi");
         response.sendRedirect("reservasi.jsp");
     } else {
         session.setAttribute("Error", "Session Anda telah habis!");

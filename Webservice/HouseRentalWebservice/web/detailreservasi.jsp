@@ -4,14 +4,7 @@
     Author     : Acer
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<%-- 
-    Document   : pembayaran
-    Created on : Jun 4, 2021, 6:12:56 PM
-    Author     : Acer
---%>
-
+<%@page import="java.time.LocalDate"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,16 +21,35 @@
     </head>
     <body>
         <%
-            com.myrental.User u = (com.myrental.User) session.getAttribute("user");
-            com.myrental.Properti p = (com.myrental.Properti) session.getAttribute("properti");
-            com.myrental.Transaksi t = (com.myrental.Transaksi) session.getAttribute("transaksi");
-            String nama = p.getNama();
-            String alamat = p.getAlamat();
-            int harga = p.getHarga();
-            String tanggal = t.getTanggalPenyewaan();
-            int jumlah_orang = t.getJumlahOrang();
-            String durasi = String.valueOf(t.getDurasiSewa());
-            int total = harga * jumlah_orang;
+            com.myrental.TransaksiService_Service service = new com.myrental.TransaksiService_Service();
+            com.myrental.TransaksiService port = service.getTransaksiServicePort();
+            if (session.getAttribute("user") != null) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                java.util.List<com.myrental.Transaksi> result = port.showDataTrans();
+                for (com.myrental.Transaksi t : result) {
+                    int total = t.getHarga();
+                    int propHarga = t.getProperti().getHarga();
+                    String nama = t.getProperti().getNama();
+                    LocalDate tglChkIn = LocalDate.parse(t.getTanggalPenyewaan());
+                    int durasi = t.getDurasiSewa();
+                    LocalDate tglChkOut = tglChkIn.plusDays(durasi);
+                    int jumlahOrang = t.getJumlahOrang();
+                    int status = t.getStatus();
+                    String catatan = t.getCatatan();
+                    String stat = "";
+                    if (tglChkOut.isAfter(LocalDate.now())) {
+                        if (status == 0) {
+                            t.setStatus(1);
+                            port.update(t.getStatus(), t.getId());
+                            stat = "Finished";
+                        }
+                    } else {
+                        if (status == 0) {
+                            stat = "Verified";
+                        } else {
+                            stat = "Finished";
+                        }
+                    }
         %>
         <!-- HEADER =============================-->
         <header class="item header margin-top-0">
@@ -80,7 +92,7 @@
             <div class="container toparea">
                 <div class="underlined-title">
                     <div class="editContent">
-                        <h1 class="text-center latestitems">Detail Transaksi</h1>
+                        <h1 class="text-center latestitems">Detail Reservasi</h1>
                     </div>
                     <div class="wow-hr type_short">
                         <span class="wow-hr-h">
@@ -91,105 +103,68 @@
                     </div>
                 </div>
                 <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2" style="width:80%; margin-left:11%;">
-                    <form id="edd_checkout_cart_form" method="post" action="">
-                        <div id="edd_checkout_cart_wrap">
-                            <table id="edd_checkout_cart" class="ajaxed tabel">
-                                <thead>
+                    <div id="edd_checkout_cart_wrap">
+                        <table id="edd_checkout_cart" class="ajaxed">
+                             <thead>
                                     <tr class="edd_cart_header_row">
                                         <th class="edd_cart_item_name">
                                             Nama Properti
                                         </th>
                                         <th class="edd_cart_item_price">
-                                            Harga Properti
+                                            Harga
                                         </th>
                                         <th class="edd_cart_item_price">
                                             Tanggal Check In
                                         </th>
                                         <th class="edd_cart_item_price">
-                                            Durasi
+                                            Durasi (malam)
+                                        </th>
+                                        <th class="edd_cart_item_price">
+                                            Tanggal Check Out
                                         </th>
                                         <th class="edd_cart_item_price">
                                             Jumlah Orang
                                         </th>
+                                        <th class="edd_cart_actions">
+                                            Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <input type="hidden" name="id" value=<%=id%>>
                                     <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
                                         <td class="edd_cart_item_name">
-                                            <span class="edd_checkout_cart_item_title"><%=nama%></span>
+                                            <span><%=nama%></span>
                                         </td>
                                         <td class="edd_cart_item_price">
-                                            Rp<%=String.format("%,d\n", harga)%>/malam
+                                            Rp<%=String.format("%,d\n", propHarga)%>/malam
                                         </td>
                                         <td class="edd_cart_item_price">
-                                            <%=tanggal%>
+                                            <%=tglChkIn%>
                                         </td>
                                         <td class="edd_cart_item_price">
                                             <%=durasi%>
                                         </td>
                                         <td class="edd_cart_item_price">
-                                            <%=jumlah_orang%>
+                                            <%=tglChkOut%>
+                                        </td>
+                                        <td class="edd_cart_item_price">
+                                            <%=jumlahOrang%>
+                                        </td>
+                                        <td class="edd_cart_actions">
+                                            <%=stat%>
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr class="edd_cart_footer_row">
-                                        <th colspan="6" class="edd_cart_total" style="font-size:20px;">
-                                            Total yang harus dibayar: Rp<span class="edd_cart_amount"><%=String.format("%,d\n", total)%></span>
-                                        </th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </form>
-                    <div id="edd_checkout_form_wrap" class="edd_clearfix">
-                        <div class="underlined-title">
-                            <div class="editContent">
-                                <h1 class="text-center latestitems">Pembayaran</h1>
-                            </div>
-                            <div class="wow-hr type_short">
-                                <span class="wow-hr-h">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <form id="edd_purchase_form" class="edd_form" action="cekTransaksi.jsp" method="POST">
-                            <fieldset id="edd_checkout_user_info">           
-                                <p class="form-check">
-                                    <label class="edd-label" for="edd-email">
-                                        Pilih jenis Pembayaran <span class="edd-required-indicator">*</span></label>
-                                    <input type="radio" name="kartu" value="Debit" id="flexRadioDefault1">
-                                    <span for="flexRadioDefault1">Debit</span>&nbsp
-                                    <input type="radio" name="kartu" value="Kredit" id="flexRadioDefault2">
-                                    <span for="flexRadioDefault2">Kredit</span>
-                                </p>
-                                <p id="edd-first-name-wrap">
-                                    <label class="edd-label" for="edd-first">
-                                        Nama Pemegang Kartu<span class="edd-required-indicator">*</span>
-                                    </label>
-                                    <input class="edd-input required" type="text" name="edd_first" placeholder="Nama" id="edd-first" value=<%= u.getNama()%> required>
-                                </p>
-                                <p id="edd-last-name-wrap">
-                                    <label class="edd-label" for="edd-last">
-                                        Nomor Kartu<span class="edd-required-indicator">*</span>
-                                    </label>
-                                    <input class="edd-input required" type="text" name="noKartu" id="edd-last" placeholder="Nomor kartu" value="" required>
-                                </p>
-                                <p id="edd-last-name-wrap">
-                                    <label class="edd-label" for="edd-last">
-                                        Catatan untuk penyewaan<span class="edd-required-indicator"></span>
-                                    </label>
-                                    <input class="edd-input required" type="text" name="catatan" id="edd-last" placeholder="Catatan" value="" required>
-                                </p>
-                            </fieldset>
-                            <fieldset id="edd_purchase_submit">
-                                <input type="hidden" name="edd_action" value="purchase">
-                                <input type="hidden" name="edd-gateway" value="manual">
-                                <input type="submit" class="edd-submit button" id="edd-purchase-button" name="edd-purchase" value="Purchase">
-                            </fieldset>
-                        </form>
+                            <tfoot>
+                                <tr class="edd_cart_footer_row">
+                                    <th colspan="7" class="edd_cart_total" style="font-size:20px;">
+                                        <p>Total yang harus dibayar: Rp<span class="edd_cart_amount"><%=String.format("%,d\n", total)%></p>
+                                        <p>Catatan: <%=catatan%></p>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -216,7 +191,9 @@
                 </div>
             </div>
         </div>
-
+        <%}}else {
+            session.setAttribute("Error", "Session telah habis!");
+            response.sendRedirect("index.jsp");}%>
         <!-- SCRIPTS =============================-->
         <script src="assets/js/jquery-.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>

@@ -156,7 +156,7 @@ public class User extends myConnection{
     
     public void insert(){
         try {
-            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO user (username, password, nama, alamat, nomor_telpon, tanggal_lahir, tempat_lahir) VALUES (?,?,?,?,?,?,?);");
+            PreparedStatement sql = (PreparedStatement)connect.prepareStatement("INSERT INTO user (username, password, nama, alamat, nomor_telpon, tanggal_lahir, tempat_lahir) VALUES (?,?,?,?,?,?,?)");
             
             sql.setString(1, getUsername());
             sql.setString(2, getPassword());
