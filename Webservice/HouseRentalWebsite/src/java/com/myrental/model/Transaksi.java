@@ -221,9 +221,9 @@ public class Transaksi extends myConnection {
         ArrayList<Transaksi> temp = new ArrayList<Transaksi>();
         try {
             stat = (Statement) connect.createStatement();
-            result = stat.executeQuery("SELECT rt.id AS rt_id, rt.properti_id, rt.harga, rt.tanggal_penyewaan, rt.durasi_sewa, rt.jumlah_orang, rt.tipe_pembayaran, rt.nomor_kartu, rt.status, rt.catatan, "
+            result = stat.executeQuery("SELECT rt.id AS rt_id, rt.properti_id, rt.harga AS total, rt.tanggal_penyewaan, rt.durasi_sewa, rt.jumlah_orang, rt.tipe_pembayaran, rt.nomor_kartu, rt.status, rt.catatan, "
                     + "u.username, u.password, u.nama, u.alamat, u.nomor_telpon, "
-                    + "p.nama AS p_nama, p.alamat, p.deskripsi, p.harga, p.rating, p.kota, p.tipe_properti, "
+                    + "p.nama AS p_nama, p.alamat AS p_alamat, p.deskripsi, p.harga, p.rating, p.kota, p.tipe_properti, "
                     + "f.id AS foto_id, f.properti_id, f.foto1, f.foto2, f.foto3, f.foto4 "
                     + "FROM riwayat_transaksi rt INNER JOIN user u ON u.username = rt.username "
                     + "INNER JOIN properti p ON p.id = rt.properti_id "
@@ -240,7 +240,7 @@ public class Transaksi extends myConnection {
                 Properti p = new Properti(
                         result.getInt("properti_id"),
                         result.getString("p_nama"),
-                        result.getString("alamat"),
+                        result.getString("p_alamat"),
                         result.getString("deskripsi"),
                         result.getInt("harga"),
                         result.getDouble("rating"),
@@ -260,7 +260,7 @@ public class Transaksi extends myConnection {
                         result.getInt("rt_id"),
                         u,
                         p,
-                        result.getInt("harga"),
+                        result.getInt("total"),
                         result.getString("tanggal_penyewaan"),
                         result.getInt("durasi_sewa"),
                         result.getInt("jumlah_orang"),

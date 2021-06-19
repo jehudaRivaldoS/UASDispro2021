@@ -91,26 +91,31 @@
                             for (com.myrental.Transaksi t : result) {
                                 int id = t.getId();
                                 String nama = t.getProperti().getNama();
-                                String total = String.format("%,d\n", t.getHarga());
+                                String harga = String.format("%,d\n", t.getProperti().getHarga());
                                 LocalDate tglChkIn = LocalDate.parse(t.getTanggalPenyewaan());
                                 int durasi = t.getDurasiSewa();
                                 LocalDate tglChkOut = tglChkIn.plusDays(durasi);
                                 int jumlahOrang = t.getJumlahOrang();
                                 int status = t.getStatus();
                                 String stat = "";
-                                if (tglChkOut.isAfter(LocalDate.now())) {
+                                if (LocalDate.now().isAfter(tglChkOut)) {
                                     if (status == 0) {
                                         t.setStatus(1);
                                         port.update(t.getStatus(), t.getId());
+                                        stat = "Finished";
+                                    } else {
                                         stat = "Finished";
                                     }
                                 } else {
                                     if (status == 0) {
                                         stat = "Verified";
                                     } else {
-                                        stat = "Finished";
+                                        t.setStatus(0);
+                                        port.update(t.getStatus(), t.getId());
+                                        stat = "Verified";
                                     }
                                 }
+
                     %>
                     <form id="edd_checkout_cart_form" method="post" action="detailreservasi.jsp">
                         <div id="edd_checkout_cart_wrap">
@@ -141,36 +146,36 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <input type="hidden" name="id" value=<%=id%>>
-                                    <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
-                                        <td class="edd_cart_item_name">
-                                            <button nameclass="btn-link"><%=nama%></button>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            Rp<%=total%>/malam
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=tglChkIn%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=durasi%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=tglChkOut%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=jumlahOrang%>
-                                        </td>
-                                        <% if (stat.equals("Finished")) {%>
-                                        <td class="edd_cart_actions">
-                                            Rating
-                                        </td>
-                                        <%} else {%>
-                                        <td class="edd_cart_actions">
-                                            <%=stat%>
-                                        </td>
-                                        <%}%>
-                                    </tr>
+                                <input type="hidden" name="id" value=<%=id%>>
+                                <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
+                                    <td class="edd_cart_item_name">
+                                        <button nameclass="btn-link"><%=nama%></button>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        Rp<%=harga%>/malam
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        <%=tglChkIn%>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        <%=durasi%>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        <%=tglChkOut%>
+                                    </td>
+                                    <td class="edd_cart_item_price">
+                                        <%=jumlahOrang%>
+                                    </td>
+                                    <% if (stat.equals("Finished")) {%>
+                                    <td class="edd_cart_actions">
+                                        Rating
+                                    </td>
+                                    <%} else {%>
+                                    <td class="edd_cart_actions">
+                                        <%=stat%>
+                                    </td>
+                                    <%}%>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

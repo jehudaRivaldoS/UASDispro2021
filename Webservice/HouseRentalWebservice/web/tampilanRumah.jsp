@@ -212,6 +212,7 @@
         <% if (session.getAttribute("Error") != null) {%>
         <script>alert("<%=session.getAttribute("Error")%>");</script>
         <%  session.removeAttribute("Error");
+            session.removeAttribute("id");
             }%>
         <script src="assets/js/anim.js"></script>
         <script>

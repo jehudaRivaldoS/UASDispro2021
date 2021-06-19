@@ -27,29 +27,34 @@
                 int id = Integer.parseInt(request.getParameter("id"));
                 java.util.List<com.myrental.Transaksi> result = port.showDataTrans();
                 for (com.myrental.Transaksi t : result) {
-                    int total = t.getHarga();
-                    int propHarga = t.getProperti().getHarga();
-                    String nama = t.getProperti().getNama();
-                    LocalDate tglChkIn = LocalDate.parse(t.getTanggalPenyewaan());
-                    int durasi = t.getDurasiSewa();
-                    LocalDate tglChkOut = tglChkIn.plusDays(durasi);
-                    int jumlahOrang = t.getJumlahOrang();
-                    int status = t.getStatus();
-                    String catatan = t.getCatatan();
-                    String stat = "";
-                    if (tglChkOut.isAfter(LocalDate.now())) {
-                        if (status == 0) {
-                            t.setStatus(1);
-                            port.update(t.getStatus(), t.getId());
-                            stat = "Finished";
-                        }
-                    } else {
-                        if (status == 0) {
-                            stat = "Verified";
+                    if (id == t.getId()) {
+                        int total = t.getHarga();
+                        int propHarga = t.getProperti().getHarga();
+                        String nama = t.getProperti().getNama();
+                        LocalDate tglChkIn = LocalDate.parse(t.getTanggalPenyewaan());
+                        int durasi = t.getDurasiSewa();
+                        LocalDate tglChkOut = tglChkIn.plusDays(durasi);
+                        int jumlahOrang = t.getJumlahOrang();
+                        int status = t.getStatus();
+                        String catatan = t.getCatatan();
+                        String stat = "";
+                        if (LocalDate.now().isAfter(tglChkOut)) {
+                            if (status == 0) {
+                                t.setStatus(1);
+                                port.update(t.getStatus(), t.getId());
+                                stat = "Finished";
+                            } else {
+                                stat = "Finished";
+                            }
                         } else {
-                            stat = "Finished";
+                            if (status == 0) {
+                                stat = "Verified";
+                            } else {
+                                t.setStatus(0);
+                                port.update(t.getStatus(), t.getId());
+                                stat = "Verified";
+                            }
                         }
-                    }
         %>
         <!-- HEADER =============================-->
         <header class="item header margin-top-0">
@@ -105,57 +110,57 @@
                 <div id="edd_checkout_wrap" class="col-md-8 col-md-offset-2" style="width:80%; margin-left:11%;">
                     <div id="edd_checkout_cart_wrap">
                         <table id="edd_checkout_cart" class="ajaxed">
-                             <thead>
-                                    <tr class="edd_cart_header_row">
-                                        <th class="edd_cart_item_name">
-                                            Nama Properti
-                                        </th>
-                                        <th class="edd_cart_item_price">
-                                            Harga
-                                        </th>
-                                        <th class="edd_cart_item_price">
-                                            Tanggal Check In
-                                        </th>
-                                        <th class="edd_cart_item_price">
-                                            Durasi (malam)
-                                        </th>
-                                        <th class="edd_cart_item_price">
-                                            Tanggal Check Out
-                                        </th>
-                                        <th class="edd_cart_item_price">
-                                            Jumlah Orang
-                                        </th>
-                                        <th class="edd_cart_actions">
-                                            Status
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <input type="hidden" name="id" value=<%=id%>>
-                                    <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
-                                        <td class="edd_cart_item_name">
-                                            <span><%=nama%></span>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            Rp<%=String.format("%,d\n", propHarga)%>/malam
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=tglChkIn%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=durasi%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=tglChkOut%>
-                                        </td>
-                                        <td class="edd_cart_item_price">
-                                            <%=jumlahOrang%>
-                                        </td>
-                                        <td class="edd_cart_actions">
-                                            <%=stat%>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                            <thead>
+                                <tr class="edd_cart_header_row">
+                                    <th class="edd_cart_item_name">
+                                        Nama Properti
+                                    </th>
+                                    <th class="edd_cart_item_price">
+                                        Harga
+                                    </th>
+                                    <th class="edd_cart_item_price">
+                                        Tanggal Check In
+                                    </th>
+                                    <th class="edd_cart_item_price">
+                                        Durasi (malam)
+                                    </th>
+                                    <th class="edd_cart_item_price">
+                                        Tanggal Check Out
+                                    </th>
+                                    <th class="edd_cart_item_price">
+                                        Jumlah Orang
+                                    </th>
+                                    <th class="edd_cart_actions">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <input type="hidden" name="id" value=<%=id%>>
+                            <tr class="edd_cart_item" id="edd_cart_item_0_25" data-download-id="25">
+                                <td class="edd_cart_item_name">
+                                    <span><%=nama%></span>
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    Rp<%=String.format("%,d\n", propHarga)%>/malam
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    <%=tglChkIn%>
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    <%=durasi%>
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    <%=tglChkOut%>
+                                </td>
+                                <td class="edd_cart_item_price">
+                                    <%=jumlahOrang%>
+                                </td>
+                                <td class="edd_cart_actions">
+                                    <%=stat%>
+                                </td>
+                            </tr>
+                            </tbody>
                             <tfoot>
                                 <tr class="edd_cart_footer_row">
                                     <th colspan="7" class="edd_cart_total" style="font-size:20px;">
@@ -191,9 +196,12 @@
                 </div>
             </div>
         </div>
-        <%}}else {
-            session.setAttribute("Error", "Session telah habis!");
-            response.sendRedirect("index.jsp");}%>
+        <%}
+                }
+            } else {
+                session.setAttribute("Error", "Session telah habis!");
+                response.sendRedirect("index.jsp");
+            }%>
         <!-- SCRIPTS =============================-->
         <script src="assets/js/jquery-.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>

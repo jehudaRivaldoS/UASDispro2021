@@ -42,9 +42,9 @@
             }
 
         } else {
-            session.setAttribute("id", p.getId());
+            session.removeAttribute("id");
             session.setAttribute("Error", "Session telah habis!");
-            response.sendRedirect("tampilanRumah.jsp");
+            response.sendRedirect("index.jsp");
         }
     } catch (Exception ex) {
         // TODO handle custom exceptions here

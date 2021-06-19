@@ -132,6 +132,7 @@ public class User extends myConnection{
     }
 
     public ArrayList<User> showData(){
+        getConnect();
         ArrayList<User> temp = new ArrayList<User>();
         try {
             stat = (Statement)connect.createStatement();

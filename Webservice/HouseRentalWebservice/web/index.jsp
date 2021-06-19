@@ -121,7 +121,7 @@
 
                             <blockquote>              
                                 <p style="text-align: center;">1. Melakukan Login</p>
-                                <p class="content">Jika belum memiliki akun, dapat melakukan pendaftaran. Setelah terbuat, tinggal klik login. Untuk login, ikutin tombol bulat di bawah ini.</p>
+                                <p class="block-content">Jika belum memiliki akun, dapat melakukan pendaftaran. Setelah terbuat, tinggal klik login. Untuk login, ikutin tombol bulat di bawah ini.</p>
                                 <img src="assets/images/img1.png" width="200px" height="150px">
                             </blockquote>
                         </div>
@@ -129,7 +129,7 @@
                         <div class="slide">
                             <blockquote>              
                                 <p style="text-align: center;">2. Terlihat daftar rumah</p>
-                                <p class="content">Pilih rumah yang ingin disewa. Dengan cara klik tampilan rumah tersebut.</p>
+                                <p class="block-content">Pilih rumah yang ingin disewa. Dengan cara klik tampilan rumah tersebut.</p>
                                 <img src="assets/images/img2.png" width="200px" height="150px">
                             </blockquote>
 
@@ -139,7 +139,7 @@
 
                             <blockquote>              
                                 <p style="text-align: center;">3. Mengisi form penyewaan.</p>
-                                <p class="content">Lengkapi form tersebut. Setelah itu, klik checkout.</p>
+                                <p class="block-content">Lengkapi form tersebut. Setelah itu, klik checkout.</p>
                                 <img src="assets/images/img5.png" width="200px" height="150px">
                             </blockquote>
 
@@ -148,7 +148,7 @@
                         <div class="slide">
                             <blockquote>              
                                 <p style="text-align: center;">4. Melakukan pembayaran.</p>
-                                <p class="content">Pilih jenis pembayaran Anda. Lalu, klik submit untuk mengkonfirmasi pembayaran tersebut.</p>
+                                <p class="block-content">Pilih jenis pembayaran Anda. Lalu, klik submit untuk mengkonfirmasi pembayaran tersebut.</p>
                                 <img src="assets/images/img3.png" width="200px" height="150px">
                             </blockquote>
 
@@ -157,7 +157,7 @@
                         <div class="slide">
                             <blockquote>              
                                 <p style="text-align: center;">5. Selesai.</p>
-                                <p class="content">Jika proses berhasil, anda akan kembali ke halaman utama dan menerima info tentang rumah tersebut.</p>
+                                <p class="block-content">Jika proses berhasil, anda akan kembali ke halaman utama dan menerima info tentang rumah tersebut.</p>
                                 <img src="assets/images/img6.png" width="200px" height="150px">
                             </blockquote>
 

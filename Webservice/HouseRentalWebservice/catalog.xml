@@ -6,10 +6,10 @@
     <system systemId="http://localhost:8080/HouseRentalWebsite/TransaksiService?xsd=1" uri="src/conf/xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebsite/TransaksiService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/HouseRentalWebsite/PropertiService?wsdl" uri="src/conf/xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebsite/PropertiService.wsdl"/>
     <system systemId="http://localhost:8080/HouseRentalWebsite/PropertiService?xsd=1" uri="src/conf/xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebsite/PropertiService.xsd_1.xsd"/>
-    <system systemId="http://localhost:8080/HouseRentalWebservice/TransaksiService?wsdl" uri="src/conf/xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.wsdl"/>
-    <system systemId="http://localhost:8080/HouseRentalWebservice/TransaksiService?xsd=1" uri="src/conf/xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/HouseRentalWebservice/PropertiService?wsdl" uri="src/conf/xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebservice/PropertiService.wsdl"/>
     <system systemId="http://localhost:8080/HouseRentalWebservice/PropertiService?xsd=1" uri="src/conf/xml-resources/web-service-references/PropertiService/wsdl/localhost_8080/HouseRentalWebservice/PropertiService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/HouseRentalWebservice/UserService?wsdl" uri="src/conf/xml-resources/web-service-references/UserService/wsdl/localhost_8080/HouseRentalWebservice/UserService.wsdl"/>
     <system systemId="http://localhost:8080/HouseRentalWebservice/UserService?xsd=1" uri="src/conf/xml-resources/web-service-references/UserService/wsdl/localhost_8080/HouseRentalWebservice/UserService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/HouseRentalWebservice/TransaksiService?wsdl" uri="src/conf/xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.wsdl"/>
+    <system systemId="http://localhost:8080/HouseRentalWebservice/TransaksiService?xsd=1" uri="src/conf/xml-resources/web-service-references/TransaksiService/wsdl/localhost_8080/HouseRentalWebservice/TransaksiService.xsd_1.xsd"/>
 </catalog>

@@ -16,7 +16,7 @@
         String tanggal = t.getTanggalPenyewaan();
         int jumlah_orang = t.getJumlahOrang();
         int durasi = t.getDurasiSewa();
-        int total = harga * jumlah_orang;
+        int total = harga * durasi;
         String tipeBayar = request.getParameter("kartu");
         String nomorKartu = request.getParameter("noKartu");
         String catatan = request.getParameter("catatan");

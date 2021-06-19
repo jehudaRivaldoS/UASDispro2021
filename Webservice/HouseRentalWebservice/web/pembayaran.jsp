@@ -28,8 +28,8 @@
             int harga = p.getHarga();
             String tanggal = t.getTanggalPenyewaan();
             int jumlah_orang = t.getJumlahOrang();
-            String durasi = String.valueOf(t.getDurasiSewa());
-            int total = harga * jumlah_orang;
+            int durasi = t.getDurasiSewa();
+            int total = harga * durasi;
         %>
         <!-- HEADER =============================-->
         <header class="item header margin-top-0">
