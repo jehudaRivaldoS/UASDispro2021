@@ -3,21 +3,51 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package login_register_uiutama;
+package JavaAppClient;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author MyAcer
  */
 public class FormLogin extends javax.swing.JFrame {
-
+    Socket client;
+    DataOutputStream out;
+    BufferedReader inp; 
     /**
      * Creates new form FormLogin
      */
     public FormLogin() {
         initComponents();
+        try {
+            this.client = new Socket("localhost",34123);
+           
+          } catch (Exception ex) {
+            Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public FormLogin(Socket s,String nama) {
+        initComponents();
+        client =s;
+        txtUsername.setText(nama);
     }
 
+     public void sendChat(String msg){
+        try {
+            out.writeBytes(msg+"\n");
+ 
+        } catch (Exception ex) {
+            Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,10 +76,20 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel3.setText("Password : ");
 
         btnLogin.setText("LOGIN");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Apakah anda belum punya akun ? ");
 
         btnDaftar.setText("Daftar");
+        btnDaftar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDaftarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +142,47 @@ public class FormLogin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // TODO add your handling code here:
+         try {
+            // TODO add your handling code here:
+            this.out = new DataOutputStream((client.getOutputStream()));
+            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            
+            String username = txtUsername.getText();
+            String pass = String.valueOf(txtPassword.getPassword());
+            
+            String msg = "LOGIN-" + username.toString() + "-" + pass.toString();
+            
+            sendChat(msg);
+            
+            String terima = inp.readLine();
+            if(terima.contains("TRUE"))
+            {
+                JOptionPane.showMessageDialog(null, "SUKSES");
+                new FormPilihan(client,txtUsername.getText()).setVisible(true);
+                dispose();
+                
+            }
+            else if(terima.contains("FALSE"))
+            {
+                JOptionPane.showMessageDialog(null, "SALAH");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "KESALAHAN");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
+        // TODO add your handling code here:
+         new FormRegister(client).setVisible(true);
+         dispose();
+    }//GEN-LAST:event_btnDaftarActionPerformed
 
     /**
      * @param args the command line arguments

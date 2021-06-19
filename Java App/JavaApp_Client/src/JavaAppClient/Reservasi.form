@@ -9,7 +9,7 @@
     </Component>
   </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -71,6 +71,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="KIRIM"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKirimActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="scrllPanePesan">
       <AuxValues>
@@ -100,6 +103,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ketikkan pesan...."/>
       </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtFieldPesanMousePressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

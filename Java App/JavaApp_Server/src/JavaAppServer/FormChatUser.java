@@ -1,21 +1,130 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package JavaAppServer;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+
 /**
  *
  * @author Acer
  */
-public class FormChatUser extends javax.swing.JFrame {
-
+public class FormChatUser extends javax.swing.JFrame implements Runnable{
+    Socket client;
+    String pesan="";
+    DataOutputStream out;
+    BufferedReader inp;
+    Thread t; 
+    String nama ="";
+    String userid = "";
     /**
      * Creates new form FormChatUser
      */
     public FormChatUser() {
-        initComponents();
+//        try {
+//            initComponents();
+//            
+//            ss = new ServerSocket(34123);
+//            client = ss.accept();
+//            nama = "budi";
+//            
+//            this.out = new DataOutputStream(client.getOutputStream());
+//            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+//            
+//            if(t == null)
+//            {
+//                this.t = new Thread(this,"Client");
+//
+//                t.start();
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+   }
+    
+    public FormChatUser(Socket s, String nama_user, String user_id, 
+            String pemilik, BufferedReader inps, DataOutputStream outs) {
+       
+         try {
+             initComponents();
+            
+            client = s;  
+            nama = pemilik; 
+            userid = user_id; 
+            jLabel1.setText(nama_user);
+            inp = inps;
+            out = outs;
+           // this.out = new DataOutputStream(client.getOutputStream());
+       //     this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            
+            if(t == null)
+            {
+                this.t = new Thread(this,"Client");
+
+                t.start();
+            }
+          
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     public void sendChat(String msg){
+        try {
+            if(msg.contains("keluar")){
+                this.dispose();
+            }
+             //this.out = new DataOutputStream(client.getOutputStream());
+         
+            out.writeBytes(msg+"\n");
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+     private void showChat(){
+        try 
+        {
+          //  this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            String pesan= inp.readLine();
+            if(pesan.contains("keluar")){
+                this.dispose();
+            }
+            
+            else if(!(pesan.contains("chat"))){
+               if(!(pesan.contains(jLabel1.getText() +":"))){
+                   pesan = jLabel1.getText() + pesan;
+               }
+                
+                txtAreaMsg.append(pesan +"\n");
+               
+                DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar cal = Calendar.getInstance();
+                String waktu = date.format(cal.getTime());
+
+                UserServer s = new UserServer(userid);
+                chat c = new chat(s,waktu,pesan);
+                c.CatatChat();
+               
+            }
+        }
+        catch (Exception ex) 
+        {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,11 +145,17 @@ public class FormChatUser extends javax.swing.JFrame {
         btnSend1 = new javax.swing.JButton();
         btnSend2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txtAreaMsg.setColumns(20);
         txtAreaMsg.setRows(5);
         jScrollPane1.setViewportView(txtAreaMsg);
+
+        txtMsg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtMsgMousePressed(evt);
+            }
+        });
 
         jLabel2.setText("Pesan:");
 
@@ -113,16 +228,31 @@ public class FormChatUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-
+        String pesan = txtMsg.getText();
+        this.sendChat(nama+": "+pesan);
+        txtAreaMsg.append("Me: "+ pesan +"\n");
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnSend1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            FormAudioUser frm = new FormAudioUser();
+            frm.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnSend1ActionPerformed
 
     private void btnSend2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSend2ActionPerformed
+
+    private void txtMsgMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMsgMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMsgMousePressed
 
     /**
      * @param args the command line arguments
@@ -169,4 +299,22 @@ public class FormChatUser extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAreaMsg;
     private javax.swing.JTextField txtMsg;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        try {
+           
+            String join = "chat-" + jLabel1.getText()+ "-"+nama ;
+            
+            this.sendChat(join);
+            
+            while (true) 
+            {
+                this.showChat();
+                
+            }
+        } catch (Exception e) {
+             Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, e);
+        }//To change body of generated methods, choose Tools | Templates.
+    }
 }

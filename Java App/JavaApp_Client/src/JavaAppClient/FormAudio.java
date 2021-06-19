@@ -3,7 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package usermode;
+package JavaAppClient;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
 
 /**
  *
@@ -14,8 +31,98 @@ public class FormAudio extends javax.swing.JFrame {
     /**
      * Creates new form FormAudio
      */
-    public FormAudio() {
-        initComponents();
+    public byte[] buffer;
+    //private int port;
+    static AudioInputStream ais;
+    static SourceDataLine sourceDataLine;
+    
+    static AudioFormat format;
+    static boolean status = true;
+    
+    static int sampleRate = 44100;
+    static int port = 50005;
+    static MulticastSocket mSocket ;
+
+    static DataLine.Info dataLineInfo;
+    /**
+     * Creates new form FormAudioUser
+     */
+     TargetDataLine line;
+    AudioInputStream audioInputStream;   
+    
+    public FormAudio() throws UnknownHostException, IOException, LineUnavailableException {
+        initComponents(); 
+        
+        try {
+           
+            mSocket = new MulticastSocket(port);
+            
+            
+            System.setProperty("java.net.preferIPv4Stack", "true");
+            
+            InetAddress group = InetAddress.getByName("225.6.7.8");
+            TargetDataLine line;
+            InetAddress addr;
+            DatagramPacket dgp;
+            
+            mSocket.setReuseAddress(true);
+            mSocket.joinGroup(group);
+            
+            byte[] receiveData = new byte[4096];
+            
+            format = new AudioFormat(sampleRate, 16, 2, true, false);
+            dataLineInfo = new DataLine.Info(SourceDataLine.class, format);
+            sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+            sourceDataLine.open(format);
+            sourceDataLine.start();
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+            line = (TargetDataLine) AudioSystem.getLine(info);
+            
+            line.open(format);
+            
+            line.start();
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            
+            ByteArrayInputStream baiss = new ByteArrayInputStream(receivePacket.getData());
+            
+            byte[] data = new byte[4096];
+            
+            addr = InetAddress.getByName("225.6.7.8");
+            MulticastSocket socket = new MulticastSocket();
+            
+            while (status == true)
+        {
+            mSocket.receive(receivePacket);
+            ais = new AudioInputStream(baiss, format, receivePacket.getLength());
+            toSpeaker(receivePacket.getData());
+            line.read(data, 0, data.length);
+                // Save this chunk of data.
+                dgp = new DatagramPacket (data,data.length,addr,port);
+
+                socket.send(dgp);
+        }
+
+        sourceDataLine.drain();
+        sourceDataLine.close();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(FormAudio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FormAudio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(FormAudio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public static void toSpeaker(byte soundbytes[]) {
+        try
+        {
+            System.out.println("At the speaker");
+            sourceDataLine.write(soundbytes, 0, soundbytes.length);
+        } catch (Exception e) {
+            System.out.println("Not working in speakers...");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -28,15 +135,14 @@ public class FormAudio extends javax.swing.JFrame {
     private void initComponents() {
 
         lblNama = new javax.swing.JLabel();
-        lblDurasi = new javax.swing.JLabel();
         btnEnd = new javax.swing.JButton();
         lblUser = new javax.swing.JLabel();
+        btnTurnOnMic = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        lblNama.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblNama.setText("Nama");
-
-        lblDurasi.setText("00:00");
 
         btnEnd.setBackground(new java.awt.Color(204, 0, 0));
         btnEnd.setForeground(new java.awt.Color(204, 0, 0));
@@ -44,44 +150,60 @@ public class FormAudio extends javax.swing.JFrame {
 
         lblUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/rsz_user.png"))); // NOI18N
 
+        btnTurnOnMic.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btnTurnOnMic.setText("Turn On Mic");
+        btnTurnOnMic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTurnOnMicActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNama)
-                            .addComponent(lblDurasi)
-                            .addComponent(lblUser)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(142, 142, 142)
-                        .addComponent(btnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(170, Short.MAX_VALUE))
+                        .addComponent(lblUser)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblNama, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnEnd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTurnOnMic, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(lblNama)
-                .addGap(29, 29, 29)
-                .addComponent(lblDurasi)
-                .addGap(26, 26, 26)
-                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(lblNama, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnTurnOnMic, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTurnOnMicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurnOnMicActionPerformed
+        // TODO add your handling code here:
+        FormMicClient m = new FormMicClient();
+        m.setVisible(true);
+    }//GEN-LAST:event_btnTurnOnMicActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws LineUnavailableException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -108,15 +230,27 @@ public class FormAudio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormAudio().setVisible(true);
+                try {
+                    new FormAudio().setVisible(true); 
+                    
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(FormAudio.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (LineUnavailableException ex) {
+                    Logger.getLogger(FormAudio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnd;
-    private javax.swing.JLabel lblDurasi;
+    private javax.swing.JButton btnTurnOnMic;
     private javax.swing.JLabel lblNama;
     private javax.swing.JLabel lblUser;
     // End of variables declaration//GEN-END:variables
+
+    
 }
