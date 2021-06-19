@@ -3,19 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package usermode;
+package JavaAppClient;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.net.Socket;
 
 /**
  *
  * @author patrick
  */
 public class Konsultasi extends javax.swing.JFrame {
-
+    Socket client;
+    int no=1;
+    BufferedReader inp;
+    DataOutputStream out;
     /**
      * Creates new form Konsultasi
      */
     public Konsultasi() {
         initComponents();
+    }
+ 
+    public Konsultasi(Socket s,String nama,String alamat,String harga,DataOutputStream outs, BufferedReader inps) {
+        initComponents();
+        client = s;
+        lblNama.setText(nama);
+        lblAlamat.setText(alamat);
+        lblHarga.setText(harga);
+        inp = inps;
+        out = outs; 
     }
 
     /**
@@ -27,50 +44,40 @@ public class Konsultasi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblJudul = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableProfil = new javax.swing.JTable();
+        lblNama = new javax.swing.JLabel();
+        lblAlamat = new javax.swing.JLabel();
+        lblHarga = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        lblJudul.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblJudul.setText("KONTAK");
+        lblNama.setText("Nama Rumah");
 
-        tableProfil.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Penyewa", "Rumah Disewa"
-            }
-        ));
-        jScrollPane1.setViewportView(tableProfil);
+        lblAlamat.setText("Alamat");
+
+        lblHarga.setText("Harga");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(311, 311, 311)
-                        .addComponent(lblJudul)))
-                .addContainerGap(73, Short.MAX_VALUE))
+                    .addComponent(lblNama)
+                    .addComponent(lblAlamat)
+                    .addComponent(lblHarga))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(lblJudul)
+                .addGap(45, 45, 45)
+                .addComponent(lblNama)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addComponent(lblAlamat)
+                .addGap(18, 18, 18)
+                .addComponent(lblHarga)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         pack();
@@ -112,8 +119,8 @@ public class Konsultasi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblJudul;
-    private javax.swing.JTable tableProfil;
+    private javax.swing.JLabel lblAlamat;
+    private javax.swing.JLabel lblHarga;
+    private javax.swing.JLabel lblNama;
     // End of variables declaration//GEN-END:variables
 }

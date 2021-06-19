@@ -3,19 +3,80 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package usermode;
+package JavaAppClient;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author patrick
  */
-public class FormChat extends javax.swing.JFrame {
+public class FormChat extends javax.swing.JFrame implements Runnable {
+
+    Socket client;
+    DataOutputStream out;
+    BufferedReader inp;
+    Thread t;
+    String nama = "";
+    boolean onWhile = true;
 
     /**
      * Creates new form FormChat
      */
     public FormChat() {
         initComponents();
+    }
+
+    public FormChat(String identitas) {
+        try {
+            initComponents();
+            this.client = new Socket("localhost",34125);  
+            this.out = new DataOutputStream((client.getOutputStream()));
+            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            lblNama.setText("myRental");
+
+            if (t == null) {
+                this.t = new Thread(this, "Client");
+                t.start();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sendChat(String msg) {
+        try {
+            System.out.println("58");
+            out.writeBytes(msg + "\n");
+        } catch (Exception ex) {
+            Logger.getLogger(FormChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void showChat() {
+        try {
+            System.out.println("64");
+            String pesan = inp.readLine();
+
+            if (pesan.contains("chat")) {
+                String[] identitas = pesan.split("-");
+                nama = identitas[1];
+            } else if (pesan.equals("Bye")) {
+                onWhile = false;
+                this.dispose();
+            } else {
+                System.out.println("72");
+                txtAreaPesan.append(pesan + "\n");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -31,12 +92,23 @@ public class FormChat extends javax.swing.JFrame {
         scrllPanePesan = new javax.swing.JScrollPane();
         txtAreaPesan = new javax.swing.JTextArea();
         txtFieldPesan = new javax.swing.JTextField();
-        lblNama = new javax.swing.JLabel();
         lblUser = new javax.swing.JLabel();
+        lblNama = new javax.swing.JLabel();
+        btnAudio = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btnKirim.setText("KIRIM");
+        btnKirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKirimActionPerformed(evt);
+            }
+        });
 
         txtAreaPesan.setEditable(false);
         txtAreaPesan.setColumns(20);
@@ -44,10 +116,23 @@ public class FormChat extends javax.swing.JFrame {
         scrllPanePesan.setViewportView(txtAreaPesan);
 
         txtFieldPesan.setText("Ketikkan pesan....");
-
-        lblNama.setText("Nama");
+        txtFieldPesan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtFieldPesanMousePressed(evt);
+            }
+        });
 
         lblUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gambar/rsz_user.png"))); // NOI18N
+
+        lblNama.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        lblNama.setText("noname");
+
+        btnAudio.setText("Audio");
+        btnAudio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAudioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,21 +140,20 @@ public class FormChat extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrllPanePesan)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnKirim))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblNama)))
-                        .addGap(0, 24, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblNama)
+                        .addGap(107, 107, 107)
+                        .addComponent(btnAudio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(scrllPanePesan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnKirim))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -77,18 +161,44 @@ public class FormChat extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblUser)
-                    .addComponent(lblNama))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAudio)
+                            .addComponent(lblNama))
+                        .addGap(9, 9, 9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrllPanePesan, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(scrllPanePesan, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnKirim)
-                    .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                    .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnKirim))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKirimActionPerformed
+
+        // TODO add your handling code here:
+        String pesan = txtFieldPesan.getText();
+        txtAreaPesan.append("Me: " + pesan + "\n");
+        this.sendChat(nama + ": " + pesan);
+
+    }//GEN-LAST:event_btnKirimActionPerformed
+
+    private void txtFieldPesanMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFieldPesanMousePressed
+        // TODO add your handling code here:
+        txtFieldPesan.setText("");
+    }//GEN-LAST:event_txtFieldPesanMousePressed
+
+    private void btnAudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAudioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAudioActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        sendChat("Bye");
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -126,6 +236,7 @@ public class FormChat extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAudio;
     private javax.swing.JButton btnKirim;
     private javax.swing.JLabel lblNama;
     private javax.swing.JLabel lblUser;
@@ -133,4 +244,17 @@ public class FormChat extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAreaPesan;
     private javax.swing.JTextField txtFieldPesan;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        try {
+            String join = "chat/" + lblNama.getText();
+            this.sendChat(join);
+            while (onWhile) {
+                this.showChat();
+            }
+        } catch (Exception e) {
+            Logger.getLogger(FormChat.class.getName()).log(Level.SEVERE, null, e);
+        }//To change body of generated methods, choose Tools | Templates.
+    }
 }

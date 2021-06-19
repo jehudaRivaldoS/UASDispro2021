@@ -5,17 +5,92 @@
  */
 package JavaAppServer;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+
 /**
  *
  * @author Acer
  */
-public class FormChatUser extends javax.swing.JFrame {
+public class FormChatUser extends javax.swing.JFrame implements Runnable {
+
+    Socket client;
+    String pesan = "";
+    DataOutputStream out;
+    BufferedReader inp;
+    Thread t;
+    String nama = "";
+    ServerSocket ss;
 
     /**
      * Creates new form FormChatUser
      */
     public FormChatUser() {
         initComponents();
+    }
+
+    public FormChatUser(String nama_user, String pemilik) {
+        try {
+            initComponents();
+            ServerSocket ss = new ServerSocket(34125);
+            client = ss.accept();
+            nama = pemilik;
+            jLabel1.setText(nama_user);
+            this.out = new DataOutputStream(client.getOutputStream());
+            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+            if (t == null) {
+                this.t = new Thread(this, "Client");
+                t.start();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sendChat(String msg) {
+        try {
+            //this.out = new DataOutputStream(client.getOutputStream());
+            out.writeBytes(msg + "\n");
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void showChat() {
+        try {
+            //  this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            //Menerima pesan dari Server
+            System.out.println("95");
+            String pesan = inp.readLine();
+            //Menampilkan pesan
+            if (pesan.equalsIgnoreCase("Bye")) {
+                sendChat("Bye");
+            } else {
+                txtAreaMsg.append(pesan + "\n");
+            }
+            System.out.println("100");
+//            //Memasukkan chat ke dalam database 
+//            DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Calendar cal = Calendar.getInstance();
+//            String waktu = date.format(cal.getTime());
+
+//            UserServer s = new UserServer(nama);
+//            chat c = new chat(s,waktu,pesan);
+//            c.CatatChat();
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,7 +111,7 @@ public class FormChatUser extends javax.swing.JFrame {
         btnSend1 = new javax.swing.JButton();
         btnSend2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txtAreaMsg.setColumns(20);
         txtAreaMsg.setRows(5);
@@ -113,11 +188,22 @@ public class FormChatUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-
+        String pesan = txtMsg.getText();
+        txtAreaMsg.append("Me: " + pesan + "\n");
+        this.sendChat(nama + ": " + pesan);
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnSend1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            FormAudioUser frm = new FormAudioUser();
+            frm.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_btnSend1ActionPerformed
 
     private void btnSend2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend2ActionPerformed
@@ -169,4 +255,15 @@ public class FormChatUser extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAreaMsg;
     private javax.swing.JTextField txtMsg;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        try {
+            while (true) { //Thread membuat Client selalu menerima pesan dari Server
+                this.showChat();
+            }
+        } catch (Exception e) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, e);
+        }//To change body of generated methods, choose Tools | Templates.
+    }
 }

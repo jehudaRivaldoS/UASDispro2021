@@ -5,18 +5,107 @@
  */
 package JavaAppServer;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Acer
  */
-public class FormHome extends javax.swing.JFrame {
+public class FormHome extends javax.swing.JFrame implements Runnable {
+
+    ServerSocket ss;
+    Socket client;
+    Thread t;
+
+    String pembeli = "";
+    String pemilik = "";
+
+    property p;
+    UserServer s;
+
+    ArrayList<property> listRumah = new ArrayList<property>();
 
     /**
      * Creates new form FormHome
      */
     public FormHome() {
         initComponents();
+        try {
+            ss = new ServerSocket(34123);
+            if (t == null) {
+                this.t = new Thread(this, "Client");
+                t.start();
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
+    // <editor-fold defaultstate="collapsed" desc="chatTable()">
+    public void ChatTable() {
+
+        try {
+            chat c = new chat();
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            Object[] rowData = new Object[2];
+
+            for (chat ch : c.RiwayatChat("")) {
+
+                rowData[0] = ch.penyewa.getUsernames();
+                rowData[1] = ch.isiChat;
+
+                model.addRow(rowData);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="RiwayatTable()">
+    public void RiwayatTable() {
+        try {
+            riwayatTransaksi rt = new riwayatTransaksi();
+
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            model.setRowCount(0);
+            Object[] rowData = new Object[7];
+
+            for (riwayatTransaksi rts : rt.RiwayatPesanan("")) {
+                rowData[0] = rts.getId();
+                rowData[1] = rts.getProperti().getNama();
+                rowData[2] = rts.getPenyewa().getUsernames();
+                rowData[3] = rts.getTanggal_sewa();
+                rowData[4] = rts.getDurasi();
+                rowData[5] = rts.getJumlah_orang();
+                rowData[6] = rts.getStatus();
+                model.addRow(rowData);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    // </editor-fold>
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,25 +149,35 @@ public class FormHome extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Reservasi", "Rumah", "Pemesan", "Tanggal Check In", "Durasi Sewa", "Jumlah Orang"
+                "ID Reservasi", "Rumah", "Pemesan", "Tanggal Check In", "Durasi Sewa", "Jumlah Orang", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(jTable2);
@@ -90,6 +189,11 @@ public class FormHome extends javax.swing.JFrame {
         jLabel4.setText("Konsultasi Penyewa");
 
         btnKeluar.setText("Keluar");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,10 +201,10 @@ public class FormHome extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(23, 23, 23)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel2)
@@ -126,11 +230,66 @@ public class FormHome extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnKeluar)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+        int i = jTable2.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+
+        String id = model.getValueAt(i, 0).toString();
+        String rumah = model.getValueAt(i, 1).toString();
+        String penyewa = model.getValueAt(i, 2).toString();
+        String tgl = model.getValueAt(i, 3).toString();
+        String durasi = model.getValueAt(i, 4).toString();
+        String jumOrang = model.getValueAt(i, 5).toString();
+        int status = Integer.parseInt(model.getValueAt(i, 6).toString());
+        String catat = "";
+
+        riwayatTransaksi ns = new riwayatTransaksi();
+
+        for (riwayatTransaksi a : ns.RiwayatPesanan(penyewa)) {
+            if (Integer.parseInt(id) == a.id) {
+                catat = a.getCatatan();
+            }
+        }
+        FormDetailTransaksi k = new FormDetailTransaksi(client, id, rumah, penyewa,
+                tgl, durasi, jumOrang, status, catat);
+
+        k.setVisible(true);
+
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            // TODO add your handling code here:
+            int i = jTable1.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            String username = model.getValueAt(i, 0).toString();
+            riwayatTransaksi ns = new riwayatTransaksi();
+
+            for (riwayatTransaksi a : ns.RiwayatPesanan(username)) {
+                pembeli = a.penyewa.getNama();
+                pemilik = "Pemilik" + a.properti.getNama();
+            }
+
+//         FormChatUser k = new FormChatUser(client,pembeli,pemilik,out,inp);
+//       
+//         k.setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -177,4 +336,20 @@ public class FormHome extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        //To change body of generated methods, choose Tools | Templates.
+        try {
+            while (true) {
+                RiwayatTable();
+                ChatTable();
+                client = ss.accept();
+                HandleSocket hs = new HandleSocket(this, client);
+                hs.start();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
