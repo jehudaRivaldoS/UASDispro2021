@@ -2,3 +2,7 @@
 /Webservice/HouseRentalWebservice/build/
 /Webservice/HouseRentalWebsite/build/
 /Webservice/HouseRentalWebservice/dist/
+/AudioClient/build/
+/AudioClient/nbproject/private/
+/AudioServer/build/
+/AudioServer/nbproject/private/
