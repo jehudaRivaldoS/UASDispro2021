@@ -19,35 +19,40 @@ import javax.swing.JOptionPane;
  * @author MyAcer
  */
 public class FormLogin extends javax.swing.JFrame {
+
     Socket client;
     DataOutputStream out;
-    BufferedReader inp; 
+    BufferedReader inp;
+
     /**
      * Creates new form FormLogin
      */
     public FormLogin() {
         initComponents();
         try {
-            this.client = new Socket("localhost",34123);
-           
-          } catch (Exception ex) {
-            Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public FormLogin(Socket s,String nama) {
-        initComponents();
-        client =s;
-        txtUsername.setText(nama);
-    }
-
-     public void sendChat(String msg){
-        try {
-            out.writeBytes(msg+"\n");
- 
+            this.client = new Socket("localhost", 34123);
+            // TODO add your handling code here:
+            this.out = new DataOutputStream((client.getOutputStream()));
+            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (Exception ex) {
             Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public FormLogin(Socket s, String nama) {
+        initComponents();
+        client = s;
+        txtUsername.setText(nama);
+    }
+
+    public void sendChat(String msg) {
+        try {
+            out.writeBytes(msg + "\n");
+        } catch (Exception ex) {
+            Logger.getLogger(FormLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,32 +150,24 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-         try {
-            // TODO add your handling code here:
-            this.out = new DataOutputStream((client.getOutputStream()));
-            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            
+        try {
+
             String username = txtUsername.getText();
             String pass = String.valueOf(txtPassword.getPassword());
-            
-            String msg = "LOGIN-" + username.toString() + "-" + pass.toString();
-            
+
+            String msg = "LOGIN/" + username.toString() + "/" + pass.toString();
+
             sendChat(msg);
-            
+
             String terima = inp.readLine();
-            if(terima.contains("TRUE"))
-            {
+            if (terima.contains("TRUE")) {
                 JOptionPane.showMessageDialog(null, "SUKSES");
-                new FormPilihan(client,txtUsername.getText()).setVisible(true);
+                new FormPilihan(client, txtUsername.getText()).setVisible(true);
                 dispose();
-                
-            }
-            else if(terima.contains("FALSE"))
-            {
+
+            } else if (terima.contains("FALSE")) {
                 JOptionPane.showMessageDialog(null, "SALAH");
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "KESALAHAN");
             }
         } catch (IOException ex) {
@@ -180,8 +177,8 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
         // TODO add your handling code here:
-         new FormRegister(client).setVisible(true);
-         dispose();
+        new FormRegister(client).setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnDaftarActionPerformed
 
     /**

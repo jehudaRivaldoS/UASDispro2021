@@ -137,7 +137,6 @@ public class UserServer extends MyConnect{
     
     public boolean checkLogin(String username, String password) {
         Boolean hasil = false;
-        int banyak=0;
         super.getConnect();
         try {
 
@@ -174,7 +173,6 @@ public class UserServer extends MyConnect{
                  sql.setString(5, nomorTelepon);
                  sql.setString(6, tglLahir);
                  sql.setString(7, tempatLahir);   
-                sql.setString(8, null); 
                 
                 sql.executeUpdate();
              }

@@ -18,43 +18,34 @@ import java.util.logging.Logger;
  * @author patrick
  */
 public class Reservasi extends javax.swing.JFrame implements Runnable {
+
     Socket client;
     DataOutputStream out;
     BufferedReader inp;
-    int i=1;
+    int i = 1;
     Thread t;
-    String idx ="";
+    String user = "";
+    String diterima = "";
+    boolean onWhile = true;
+    FormPilihan frm;
+
     /**
      * Creates new form Reservasi
      */
-     
     public Reservasi() {
         initComponents();
-     }
-    
-    public Reservasi(Socket s, DataOutputStream outs ,BufferedReader inps) {
-        initComponents();
-        this.client = s;
-       
-        this.out = outs;
-        this.inp = inps;
+    }
 
-        this.t = new Thread(this,"Client");
-        t.start();
-        
-     }
-     
-    public Reservasi(Socket s) {
-       initComponents();
+    public Reservasi(FormPilihan form, Socket s, int no, String nama) {
+        initComponents();
         try {
-             
+            frm = form;
             this.client = s;
-           // idx =user;
+            user = nama;
             this.out = new DataOutputStream((client.getOutputStream()));
             this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-          
-            if(t == null){
-                this.t = new Thread(this,"Client");
+            if (t == null) {
+                this.t = new Thread(this, "Client");
                 t.start();
             }
         } catch (Exception ex) {
@@ -81,6 +72,11 @@ public class Reservasi extends javax.swing.JFrame implements Runnable {
         jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btnKirim.setText("KIRIM");
         btnKirim.addActionListener(new java.awt.event.ActionListener() {
@@ -113,15 +109,15 @@ public class Reservasi extends javax.swing.JFrame implements Runnable {
                 .addComponent(scrllPanePesan)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 136, Short.MAX_VALUE)
                 .addComponent(lblJudul)
                 .addGap(142, 142, 142))
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(42, 42, 42)
                 .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnKirim)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,80 +126,65 @@ public class Reservasi extends javax.swing.JFrame implements Runnable {
                 .addComponent(lblJudul)
                 .addGap(30, 30, 30)
                 .addComponent(scrllPanePesan, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKirim)
                     .addComponent(txtFieldPesan, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void sendChat(String msg){
+    public void sendChat(String msg) {
         try {
-            out.writeBytes(msg+"\n");
+            out.writeBytes(msg + "\n");
             System.out.println(msg);
         } catch (Exception ex) {
             Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void showChat(){
-        try 
-        {
-            String diterima = inp.readLine();
-            
-            if(diterima.contains("check-in") || diterima.contains("check-out") || diterima.contains("jenis pembayaran") 
-                    || diterima.contains("jumlah orang") || diterima.contains("ya/tidak")|| diterima.contains("catatan")){
-               i++;
-            }
-            else if(diterima.contains("Selamat Datang!")){
-                i = 1;
-            }
-            else if(diterima.contains("Anda telah keluar")){
 
-               new DetailRumah(client, out, inp).setVisible(true);
-
-                this.dispose();
-
-            }
-            else if(diterima.contains("Terima kasih"))
-            {
-               out.writeBytes("reservasi\n");
-            }
-            
-            txtAreaPesan.append(diterima.replace("*", "\n")+"\n\n");
+    private void showChat() {
+        try {
+            diterima = inp.readLine();
             System.out.println(diterima);
-        }
-        catch (IOException ex) 
-        {
+            if (diterima.contains("check-in") || diterima.contains("durasi sewa") || diterima.contains("jenis pembayaran")
+                    || diterima.contains("jumlah orang") || diterima.contains("ya/tidak") || diterima.contains("catatan")) {
+                i++;
+            } else if (diterima.contains("Selamat Datang!")) {
+                i = 1;
+            } else if (diterima.contains("Bye")) {
+                onWhile = false;
+                frm.setEnabled(true);
+                this.dispose();
+            }
+            txtAreaPesan.append(diterima + "\n");
+        } catch (Exception ex) {
             Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void btnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKirimActionPerformed
         try {
             // TODO add your handling code here:
-            txtAreaPesan.append("\t\t\t"+txtFieldPesan.getText()+"\n\n");
-            String msg = txtFieldPesan.getText().replaceAll("\\[|\\]", "");
-            
-            if(msg.contains("sewa")){
-                msg = "sewa-"+msg+"-1";   
-            }
-            else if((!msg.contains("sewa")) && i>1){
-                msg = "sewa-"+txtFieldPesan.getText()+"-"+i; 
-            }
-            else if(!(msg.contains("sewa") || msg.contains("myrental") || msg.contains("exit") 
-                    || msg.contains("cek pemesanan") || msg.contains("tampilkan rumah")))
-            {
+            String msg = txtFieldPesan.getText();
+            txtAreaPesan.append(txtFieldPesan.getText() + "\n");
+
+            if (msg.contains("sewa")) {
+                String[] str = msg.split(":");
+                msg = "sewa/" + str[1] + "/1";
+            } else if ((!msg.contains("sewa")) && i > 1) {
+                msg = "sewa/" + txtFieldPesan.getText() + "/" + i;
+            } else if (!(msg.contains("sewa") || msg.contains("myrental")
+                    || msg.contains("cek pemesanan") || msg.contains("tampilkan rumah"))) {
                 msg = "error";
+            } else if (msg.contains("Terima kasih")) {
+                out.writeBytes("reservasi\n");
             }
-          
-          
             sendChat(msg);
         } catch (Exception ex) {
             Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, ex);
         }
-           
+
     }//GEN-LAST:event_btnKirimActionPerformed
 
     private void txtFieldPesanMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFieldPesanMousePressed
@@ -211,7 +192,10 @@ public class Reservasi extends javax.swing.JFrame implements Runnable {
         txtFieldPesan.setText("");
     }//GEN-LAST:event_txtFieldPesanMousePressed
 
-    
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        sendChat("Bye");
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -259,17 +243,16 @@ public class Reservasi extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            
+            System.out.println("265");
             String booking = "reservasi";
+            System.out.println("267");
             this.sendChat(booking);
-            
-            while (true) 
-            {
+            while (onWhile) {
+                System.out.println("271");
                 this.showChat();
-
             }
         } catch (Exception e) {
-             Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, e);
         } //To change body of generated methods, choose Tools | Templates.
     }
 }

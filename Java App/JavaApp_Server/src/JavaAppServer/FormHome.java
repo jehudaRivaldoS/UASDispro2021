@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,364 +27,310 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Acer
  */
-public class FormHome extends javax.swing.JFrame implements Runnable{
- ServerSocket ss;
- Socket client;
- DataOutputStream out;
- BufferedReader inp;
- Thread t;
- 
- String waktuIn="";
- String waktuOut="";
- double biaya =0;
- int durasi =0;
- String jenis_pembayaran ="";
- String no_rek ="";
- int jumOrg = 0;
- int pid =0;
- int no_urut=0;
- double diskon =0;
- String pengingat="";
- 
- String pembeli="";
- String pemilik="";
- 
- property p;
- UserServer s; 
-   
+public class FormHome extends javax.swing.JFrame implements Runnable {
 
- ArrayList<property>listRumah = new ArrayList<property>();
+    ServerSocket ss;
+    Socket client;
+    DataOutputStream out;
+    BufferedReader inp;
+    Thread t;
+
+    String waktuIn = "";
+    String waktuOut = "";
+    int biaya = 0;
+    int durasi = 0;
+    String jenis_pembayaran = "";
+    String no_rek = "";
+    int jumOrg = 0;
+    int pid = 0;
+    int no_urut = 0;
+    String pengingat = "";
+    String namaRumah = "";
+
+    String pembeli = "";
+    String pemilik = "";
+
+    property p;
+    UserServer s;
+    ArrayList<property> listRumah = new ArrayList<property>();
+
     /**
      * Creates new form FormHome
      */
-    
     public FormHome() {
-         initComponents();
-       try {
-           
+        initComponents();
+        try {
             ss = new ServerSocket(34123);
-            client = ss.accept();      
+            client = ss.accept();
             this.out = new DataOutputStream(client.getOutputStream());
             this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            
-            if(t == null)
-            {
-                this.t = new Thread(this,"Client");
+
+            if (t == null) {
+                this.t = new Thread(this, "Client");
                 t.start();
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void showChat(String tmp)
-    { 
-         try {
-            String kiriman="";
-  
-            String[] msg = tmp.split("-");
-            if(msg[0].equalsIgnoreCase("reservasi"))
-            {
-                kiriman ="Selamat Datang!*Apa yang bisa kami bantu?*"
-                        + "(Silahkan ikutin perintah di bawah ini:*"
-                        + "=>tampilkan rumah*"
-                        + "=>cek pemesanan*"
-                        + "=>sewa[nama rumah]*"
-                        + "=>myrental*"
-                        + "=>exit)";
-            }
+    public void showChat() {
+        try {
+            //Ambil pesan dari client
+            System.out.println("74");
+            String tmp = inp.readLine();
+            String kiriman = "";
+            System.out.println(tmp);
+            //Pisahkan pesan client
+            String[] msg = tmp.split("/");
 
-            else if(msg[0].equalsIgnoreCase("tampilkan rumah"))
-            {
-
+            // <editor-fold defaultstate="collapsed" desc="Reservasi, Tampilkan Rumah, Daftar Rumah, Sewa">
+            if (msg[0].equalsIgnoreCase("reservasi")) {
+                kiriman = "Selamat Datang!Apa yang bisa kami bantu?\n"
+                        + "Silahkan masukkan perintah di bawah ini:\n"
+                        + "1.tampilkan rumah\n"
+                        + "2.cek pemesanan\n"
+                        + "3.sewa [nama rumah]\n"
+                        + "4.myrental\n"
+                        + "5.exit\n";
+                //Jika pesan dari client adalah "tampilkan rumah"
+            } else if (msg[0].equalsIgnoreCase("tampilkan rumah")) {
+                //Tampilkan rumah dari metode DaftarRumah dari class Properti
                 p = new property();
-                int no=1;
-                for(property data : p.DaftarRumah("")){
-                    kiriman += no+"."+ data.getNama()+"**Alamat: "+data.getAlamat()+"**Informasi Tambahan: *"+data.getDeskripsi()+"**Kota: "
-                            +data.getKota()+"**Status: "+data.getStatus()+"**Tipe: "+data.getTipe_properti()
-                            +"*-----------------------------------------------------------------------------------------------------------**";
+                int no = 1;
+                for (property data : p.DaftarRumah("")) {
+                    kiriman += no + "." + data.getNama() + "\nAlamat: " + data.getAlamat() + "\nInformasi Tambahan: *" + data.getDeskripsi() + "\nKota: "
+                            + data.getKota() + "\nTipe: " + data.getTipe_properti()
+                            + "\n-----------------------------------------------------------------------------------------------------------\n";
                     no++;
-
                 }
-            }
-            else if(msg[0].equalsIgnoreCase("daftar rumah"))
-            {
-               property p = new property();
+                //Jika pesan dari client adalah "daftar rumah"
+            } else if (msg[0].equalsIgnoreCase("daftar rumah")) {
+                System.out.println("100");
+                //Tampilkan rumah dari metode DaftarRumah dari class Properti
+                property p = new property();
 
-                for(property data : p.DaftarRumah("")){
-                    kiriman += data.getNama()+"-"+data.getAlamat()+"-"+data.getHarga()+"-";
+                for (property data : p.DaftarRumah("")) {
+                    kiriman += data.getNama() + "-" + data.getAlamat() + "-Rp" + data.getHarga() + "/malam-";
                 }
-            }
-            else if(msg[0].equalsIgnoreCase("sewa"))
-            {   
-                String namaRumah = "";
-                
-                if(msg[2].contains("1"))
-                {
+                //Jika client mau menyewa
+            } else if (msg[0].equalsIgnoreCase("sewa")) {
+                //Mengambil pilihan rumah Client
+                if (msg[2].contains("1")) {
                     namaRumah = msg[1].replaceAll("sewa", "");
-                    kiriman = "Masukkan tanggal check-in (01/01/2021):";
-                    
-                }
-                else if(msg[2].contains("2"))
-                {
-                    String[] tgl = msg[1].split("/");
-                    waktuIn=tgl[2]+"/" +tgl[1]+"/"+tgl[0]+" " + LocalTime.now();
-                    
-                    kiriman = "Masukkan tanggal check-out (01/01/2021):";
- 
-                }
-                else if(msg[2].contains("3"))
-                {
-                    String[] tgl = msg[1].split("/");
-                    waktuOut=tgl[2]+"/" +tgl[1]+"/"+tgl[0]+" " + LocalTime.now();
-                                        
+                    System.out.println(namaRumah);
+                    kiriman = "Masukkan tanggal check-in (YYYY-MM-DD):";
+
+                } else if (msg[2].contains("2")) {
+                    waktuIn = msg[1];
+                    kiriman = "Masukkan durasi sewa Anda (hari):";
+
+                } else if (msg[2].contains("3")) {
+                    durasi = Integer.parseInt(msg[1]);
                     kiriman = "Masukkan jumlah orang:";
-                    
-                }
-                else if(msg[2].contains("4"))
-                {
-                   jumOrg = Integer.valueOf(msg[1]);
-                   
-                   kiriman = "Pilih jenis pembayaran dan masukkan nomor rekening"
-                            + "*(debit[no rekening]/kredit[no rekekning]):";
- 
-                }
-                else if(msg[2].contains("5"))
-                {
-                   if(msg[1].contains("debit")){
+
+                } else if (msg[2].contains("4")) {
+                    jumOrg = Integer.valueOf(msg[1]);
+                    kiriman = "Pilih jenis pembayaran dan masukkan nomor rekening"
+                            + "\n(debit[no rekening]/kredit[no rekekning]):";
+
+                } else if (msg[2].contains("5")) {
+                    //Memisahkan kembali isi msg[2]
+                    String[] bayar = msg[1].split(" ");
+                    if (bayar[0].contains("debit")) {
                         jenis_pembayaran = "Debit";
-                         no_rek = msg[1].replaceAll("debit\\[|\\]", "");
-                       
-                   }
-                   else{
+                        no_rek = bayar[1];
+
+                    } else {
                         jenis_pembayaran = "Kredit";
-                         diskon = 5;
-                         no_rek = msg[1].replaceAll("kredit\\[|\\]", "");
-                        
-                   } 
-                      
-                    kiriman = "Apa Anda ingin menambahkan catatan*(Kosongkan jika tidak ada tambahan):";
-                }
-                 else if(msg[2].contains("6"))
-                {
-                    if(!(msg[1].equals(""))){
-                         pengingat = msg[1];
-                   }
-                   else{
-                         pengingat = "";
-                        
-                   }  
-                      
+                        no_rek = bayar[1];
+                    }
+                    kiriman = "Apa Anda ingin menambahkan catatan (Kosongkan jika tidak ada tambahan):";
+                } else if (msg[2].contains("6")) {
+                    if (msg[1].contains("")) {
+                        pengingat = "";
+
+                    } else {
+                        pengingat = msg[1];
+
+                    }
                     kiriman = "Apakah anda yakin?(ya/tidak)";
-                }
-                else if(msg[2].contains("7"))
-                {
-                    if(msg[1].equalsIgnoreCase("ya"))
-                    {
-                        try{
-                            DateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                            
-                            Date tglAwal = date.parse(waktuIn);
-                            String tamp = String.valueOf(date.format(tglAwal.getTime()));
-                                                     
-                            Date tglAkhir = date.parse(waktuOut);
-                            String tamp2 = String.valueOf(date.format(tglAkhir.getTime()));
-                                                      
-                            long lama = SelisihHari(tglAwal, tglAkhir);
-                            durasi = (int)lama;
-                                                        
+                } else if (msg[2].contains("7")) {
+                    if (msg[1].equalsIgnoreCase("ya")) {
+                        try {
+                            LocalDate tglAwal = LocalDate.parse(waktuIn);
+
                             s = new UserServer(pembeli);
                             HitungTotalBiaya(namaRumah);
-                            property py = new property(pid);      
-
-                            riwayatTransaksi rt = new riwayatTransaksi(no_urut,
-                                  s, py, durasi, jumOrg, jenis_pembayaran,
-                                    no_rek, diskon, tamp, biaya,pengingat);
+                            property py = new property(pid);
+                            System.out.println(pid);
+                            riwayatTransaksi rt = new riwayatTransaksi(
+                                    s, py, durasi, jumOrg, jenis_pembayaran,
+                                    no_rek, tglAwal.toString(), biaya, pengingat, 0);
                             rt.ProsesSewa();
-                            
+
                             kiriman = "Proses pembayaran telah berhasil!*Terima kasih telah melakukan pembayaran*di myRental";
-                        }catch(Exception o){
+                        } catch (Exception o) {
                             System.out.println(o.getMessage());
                         }
-                    }
-                    else
-                    {
-                        kiriman ="Selamat Datang!*Apa yang bisa kami bantu?*"
-                                + "(Silahkan ikutin perintah di bawah ini:*"
-                                + "=>tampilkan rumah*"
-                                + "=>cek pemesanan*"
-                                + "=>sewa[nama rumah]*"
-                                + "=>myrental*"
-                                + "=>exit)";
+                        //Jika tidak yakin
+                    } else {
+                        kiriman = "Selamat Datang!Apa yang bisa kami bantu?\n"
+                                + "Silahkan masukkan perintah di bawah ini:\n"
+                                + "1.tampilkan rumah\n"
+                                + "2.cek pemesanan\n"
+                                + "3.sewa [nama rumah]\n"
+                                + "4.myrental\n"
+                                + "5.exit\n";
                     }
                 }
-            }
-            else if(msg[0].equalsIgnoreCase("CEK PEMESANAN"))
-            {
+            } // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc="Cek Pemesanan">
+            //Jika Client mau mengecek Pesanan
+            else if (msg[0].equalsIgnoreCase("CEK PEMESANAN")) {
 
                 riwayatTransaksi p = new riwayatTransaksi();
-                int no=1;
-                int jum=0;
-                for(riwayatTransaksi data : p.RiwayatPesanan(pembeli)){
-                    kiriman += data.getId()+"."+ data.getRumah().getNama()+"**Alamat: "+data.getRumah().getAlamat()+"**Kota: "+data.getRumah().getKota()
-                             +"**Total Biaya: "+data.getHarga()
-                            +"*-----------------------------------------------------------------------------------------------------------";
+                int no = 1;
+
+                for (riwayatTransaksi data : p.RiwayatPesanan(pembeli)) {
+                    kiriman += data.getId() + "." + data.getProperti().getNama() + "\nAlamat: " + data.getProperti().getAlamat() + "\nKota: " + data.getProperti().getKota()
+                            + "\nTotal Biaya: Rp" + data.getHarga() + "/malam\n"
+                            + "\n-----------------------------------------------------------------------------------------------------------\n";
                     no++;
-                   jum++;
                 }
-                if(jum==0){
-                    kiriman = "Mohon maaf, Anda belum pernah menyewa rumah.";
-                }
-               
-            }
-            else if (msg[0].equalsIgnoreCase("myRental"))
-            {
-  
-                kiriman = "myRental bergerak di bidang penyewaan property. Kalian dapat*menyewa rumah "
-                 +"yang disukai melalui website ataupun*aplikasi myRental kami. Untuk pembayaran, kami menyediakan*secara debit maupun kredit. "
-                +"*Jika merasa kurang yakin dengan property yang disajikan,*silahkan menghubungi sang pemilik melalui aplikasi kami ini.";
-            }
-            else if (msg[0].equalsIgnoreCase("exit")){
-                kiriman = "Anda telah keluar dari form Reservasi ini.";
-            }
-            else if(msg[0].equalsIgnoreCase("error")){
+            } // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc="myRental">
+            else if (msg[0].equalsIgnoreCase("myRental")) {
+
+                kiriman = "myRental bergerak di bidang penyewaan property. Kalian dapat menyewa rumah\n"
+                        + "yang disukai melalui website ataupun\naplikasi myRental kami. Untuk pembayaran, kami menyediakan secara debit maupun kredit.\n"
+                        + "Jika merasa kurang yakin dengan property yang disajikan, silahkan menghubungi sang pemilik melalui aplikasi kami ini.";
+            } // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc="Error">
+            else if (msg[0].equalsIgnoreCase("error")) {
                 kiriman = "Perintah tidak sesuai";
-            }
-            else if (msg[0].equalsIgnoreCase("chat")){
-           //     pembeli = msg[1];
+
+            } // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc="Chat">
+            else if (msg[0].equalsIgnoreCase("chat")) {
+                //Ambil username Client
                 pemilik = msg[1];
-                
+
+                //Mencari nama Client yang login
                 UserServer p = new UserServer();
-                String npemb="";
-                
-                for(UserServer data : p.DaftarPenyewa(pembeli)){
-                   npemb = data.getNama();
-                    
+                String npemb = "";
+
+                for (UserServer data : p.DaftarPenyewa(pembeli)) {
+                    npemb = data.getNama();
+                    System.out.println(npemb);
                 }
-                // out.writeBytes("chat-"+npemb+"\n");
-                 FormChatUser k = new FormChatUser(client, npemb, pembeli ,pemilik, inp, out);
-                
+
+                //Pindah ke FormChatUser beserta dengan parameter socket, nama Client, nama admin
+                FormChatUser k = new FormChatUser(client, npemb, out, inp);
                 k.setVisible(true);
-              
-            }
-            else if (msg[0].contains("LOGIN"))
-            {                    
-                UserServer u = new UserServer();               
+            } // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc="Login, Register & Bye">
+            else if (msg[0].contains("LOGIN")) {
+                UserServer u = new UserServer();
                 boolean cek = u.checkLogin(msg[1], msg[2]);
-                if(cek == true)
-                {                    
+                if (cek == true) {
                     kiriman = "TRUE";
                     pembeli = msg[1];
-                }
-                else if (cek == false)
-                {                    
+                } else if (cek == false) {
                     kiriman = "FALSE";
-                }
-                else
-                {
-                    kiriman="SALAH";
+                } else {
+                    kiriman = "SALAH";
                 }
                 System.out.println(cek);
-            }
-            else if (msg[0].contains("REGISTER"))
-            {               
+            } else if (msg[0].contains("REGISTER")) {
                 UserServer u = new UserServer();
-               boolean cek = u.checkData(msg[1], msg[3]);;
-                
-                if(cek == true)
-                {                    
+                boolean cek = u.checkData(msg[1], msg[3]);;
+
+                if (cek == true) {
                     kiriman = "TRUE";
-                   
-                }
-                else if (cek == false)
-                {                    
+
+                } else if (cek == false) {
                     kiriman = "FALSE";
                     u.Register(msg[1], msg[2], msg[3], msg[4], msg[5], msg[6], msg[7]);
-                }
-                else
-                {
+                } else {
                     kiriman = "ERROR";
                 }
                 System.out.println(cek);
+            } else if (msg[0].equals("Bye")) {
+                kiriman = "Bye";
             }
-  
-         out.writeBytes(kiriman + "\n");
-         
-     } 
-         catch (Exception ex) {
-         Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
-     }
-   }
-    
-    private long SelisihHari(Date date1, Date date2){
-        long selisih = (date2.getTime()-date1.getTime())/(24*60*60*1000);
-        return selisih;
-    }
-    
-    private void HitungTotalBiaya(String n){
-        p = new property();
-                        
-        for(property data : p.DaftarRumah(n)){
-             biaya = (durasi * data.getHarga()*jumOrg)*((100-diskon)/100);
-             pid = data.getId();
-             
-        }
+            // </editor-fold>
 
-        riwayatTransaksi rt = new riwayatTransaksi();
-        no_urut = rt.LihatIdTerakhir();
-       
+            System.out.println(kiriman);
+            out.writeBytes(kiriman + "\n");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
     }
-    
-     public void ChatTable(){
-       
+
+    // <editor-fold defaultstate="collapsed" desc="HitungTotalBiaya()">
+    private void HitungTotalBiaya(String n) {
+        p = new property();
+        System.out.println(n);
+        for (property data : p.DaftarRumah(n)) {
+            System.out.println(data.getNama());
+            biaya = durasi * data.getHarga();
+            pid = data.getId();
+        }
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="chatTable()">
+    public void ChatTable() {
+
         try {
             chat c = new chat();
-            
-            DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
             Object[] rowData = new Object[2];
-         
-            for(chat ch : c.RiwayatChat("")){
 
-                 rowData[0] = ch.penyewa.getUsernames();
-                 rowData[1] = ch.isiChat;
-                
-                 model.addRow(rowData);
+            for (chat ch : c.RiwayatChat("")) {
+
+                rowData[0] = ch.penyewa.getUsernames();
+                rowData[1] = ch.isiChat;
+
+                model.addRow(rowData);
             }
 
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-     public void RiwayatTable(){
-       
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="RiwayatTable()">
+    public void RiwayatTable() {
         try {
             riwayatTransaksi rt = new riwayatTransaksi();
-            
-            DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
-            model.setRowCount(0);
-            Object[] rowData = new Object[6];
-         
-            for(riwayatTransaksi rts : rt.RiwayatPesanan("")){
-                 rowData[0] = rts.id;
-                 rowData[1] = rts.rumah.getNama();
-                 rowData[2] = rts.penyewa.getUsernames();
-                 rowData[3] = rts.tanggal_sewa;
-                 rowData[4] = rts.durasi;
-                 rowData[5] = rts.jumlah_orang;
-                 model.addRow(rowData);
-            }
 
-        }
-        catch (Exception ex) {
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            model.setRowCount(0);
+            Object[] rowData = new Object[7];
+
+            for (riwayatTransaksi rts : rt.RiwayatPesanan("")) {
+                rowData[0] = rts.getId();
+                rowData[1] = rts.getProperti().getNama();
+                rowData[2] = rts.getPenyewa().getUsernames();
+                rowData[3] = rts.getTanggal_sewa();
+                rowData[4] = rts.getDurasi();
+                rowData[5] = rts.getJumlah_orang();
+                rowData[6] = rts.getStatus();
+                model.addRow(rowData);
+            }
+        } catch (Exception ex) {
             Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
+    // </editor-fold>
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -435,17 +382,17 @@ public class FormHome extends javax.swing.JFrame implements Runnable{
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Reservasi", "Rumah", "Pemesan", "Tanggal Check In", "Durasi Sewa", "Jumlah Orang"
+                "ID Reservasi", "Rumah", "Pemesan", "Tanggal Check In", "Durasi Sewa", "Jumlah Orang", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -521,50 +468,51 @@ public class FormHome extends javax.swing.JFrame implements Runnable{
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
         int i = jTable2.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
-        
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+
         String id = model.getValueAt(i, 0).toString();
         String rumah = model.getValueAt(i, 1).toString();
         String penyewa = model.getValueAt(i, 2).toString();
         String tgl = model.getValueAt(i, 3).toString();
         String durasi = model.getValueAt(i, 4).toString();
         String jumOrang = model.getValueAt(i, 5).toString();
-        String catat="";
-                 
+        int status = Integer.parseInt(model.getValueAt(i, 6).toString());
+        String catat = "";
+
         riwayatTransaksi ns = new riwayatTransaksi();
-         
-        for(riwayatTransaksi a : ns.RiwayatPesanan(penyewa)){
-            catat = a.getCatatan();
+
+        for (riwayatTransaksi a : ns.RiwayatPesanan(penyewa)) {
+            if (Integer.parseInt(id) == a.id) {
+                catat = a.getCatatan();
+            }
         }
-       
         FormDetailTransaksi k = new FormDetailTransaksi(client, id, rumah, penyewa,
-             tgl,durasi,jumOrang, catat,out,inp);
+                tgl, durasi, jumOrang, status, catat);
 
         k.setVisible(true);
-       
+
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-     try {
-         // TODO add your handling code here:
-         int i = jTable1.getSelectedRow();
-         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-         
-         String username = model.getValueAt(i, 0).toString();
-         riwayatTransaksi ns = new riwayatTransaksi();
-         
-         for(riwayatTransaksi a : ns.RiwayatPesanan(username)){
-             pembeli = a.penyewa.getNama();
-             pemilik ="Pemilik"+ a.rumah.getNama();
-         }
-         
+        try {
+            // TODO add your handling code here:
+            int i = jTable1.getSelectedRow();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            String username = model.getValueAt(i, 0).toString();
+            riwayatTransaksi ns = new riwayatTransaksi();
+
+            for (riwayatTransaksi a : ns.RiwayatPesanan(username)) {
+                pembeli = a.penyewa.getNama();
+                pemilik = "Pemilik" + a.properti.getNama();
+            }
+
 //         FormChatUser k = new FormChatUser(client,pembeli,pemilik,out,inp);
 //       
 //         k.setVisible(true);
-         
-     } catch (Exception ex) {
-         Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
-     }
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**
@@ -615,26 +563,15 @@ public class FormHome extends javax.swing.JFrame implements Runnable{
 
     @Override
     public void run() {
-         //To change body of generated methods, choose Tools | Templates.
-          try {
-    
-                while(true)
-                {
-                  
-                    RiwayatTable();
-                    ChatTable();
-                    String msg = inp.readLine();
- 
-                    this.showChat(msg);
- 
-                }
+        //To change body of generated methods, choose Tools | Templates.
+        try {
+            while (true) {
+                RiwayatTable();
+                ChatTable();
+                this.showChat();
             }
-             catch (Exception ex) {
-                 Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
-             }
-
-               
-               
+        } catch (Exception ex) {
+            Logger.getLogger(FormHome.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+}

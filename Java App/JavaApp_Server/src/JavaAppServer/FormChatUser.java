@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -22,107 +22,77 @@ import javax.sound.sampled.LineUnavailableException;
  *
  * @author Acer
  */
-public class FormChatUser extends javax.swing.JFrame implements Runnable{
+public class FormChatUser extends javax.swing.JFrame implements Runnable {
+
     Socket client;
-    String pesan="";
+    ServerSocket ss;
+    String pesan = "";
     DataOutputStream out;
     BufferedReader inp;
-    Thread t; 
-    String nama ="";
-    String userid = "";
+    Thread t;
+    String nama = "";
+    boolean onWhile = true;
     /**
      * Creates new form FormChatUser
      */
     public FormChatUser() {
-//        try {
-//            initComponents();
-//            
-//            ss = new ServerSocket(34123);
-//            client = ss.accept();
-//            nama = "budi";
-//            
-//            this.out = new DataOutputStream(client.getOutputStream());
-//            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-//            
-//            if(t == null)
-//            {
-//                this.t = new Thread(this,"Client");
-//
-//                t.start();
-//            }
-//        } catch (Exception ex) {
-//            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-   }
-    
-    public FormChatUser(Socket s, String nama_user, String user_id, 
-            String pemilik, BufferedReader inps, DataOutputStream outs) {
-       
-         try {
-             initComponents();
-            
-            client = s;  
-            nama = pemilik; 
-            userid = user_id; 
-            jLabel1.setText(nama_user);
-            inp = inps;
-            out = outs;
-           // this.out = new DataOutputStream(client.getOutputStream());
-       //     this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            
-            if(t == null)
-            {
-                this.t = new Thread(this,"Client");
+        initComponents();
+    }
 
+    public FormChatUser(Socket c, String npemb, DataOutputStream outs, BufferedReader inps) {
+        try {
+            initComponents();
+            client = c;
+            nama = npemb;
+            jLabel1.setText(npemb);
+            this.out = outs;
+            this.inp =  inps;
+            
+            System.out.println("51");
+            if (t == null) {
+                System.out.println("53");
+                this.t = new Thread(this, "Client");
                 t.start();
             }
-          
         } catch (Exception ex) {
             Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-     public void sendChat(String msg){
-        try {
-            if(msg.contains("keluar")){
-                this.dispose();
-            }
-             //this.out = new DataOutputStream(client.getOutputStream());
-         
-            out.writeBytes(msg+"\n");
-        } catch (Exception ex) {
-            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-     
-     private void showChat(){
-        try 
-        {
-          //  this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            String pesan= inp.readLine();
-            if(pesan.contains("keluar")){
-                this.dispose();
-            }
-            
-            else if(!(pesan.contains("chat"))){
-               if(!(pesan.contains(jLabel1.getText() +":"))){
-                   pesan = jLabel1.getText() + pesan;
-               }
-                
-                txtAreaMsg.append(pesan +"\n");
-               
-                DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar cal = Calendar.getInstance();
-                String waktu = date.format(cal.getTime());
 
-                UserServer s = new UserServer(userid);
-                chat c = new chat(s,waktu,pesan);
-                c.CatatChat();
-               
-            }
+    public void sendChat(String msg) {
+        try {
+            //this.out = new DataOutputStream(client.getOutputStream());
+            out.writeBytes(msg + "\n");
+        } catch (Exception ex) {
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (Exception ex) 
-        {
+    }
+
+    private void showChat() {
+        try {
+            //  this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            //Menerima pesan dari Server
+            System.out.println("95");
+            String pesan = inp.readLine();
+            System.out.println(pesan);
+            //Menampilkan pesan
+            if (pesan.contains("Bye")) {
+                sendChat("Bye");
+                onWhile=false;
+                this.dispose();
+            } else if (!pesan.contains("chat/myRental")) {
+                txtAreaMsg.append(pesan + "\n");
+            }
+            System.out.println("100");
+//            //Memasukkan chat ke dalam database 
+//            DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Calendar cal = Calendar.getInstance();
+//            String waktu = date.format(cal.getTime());
+
+//            UserServer s = new UserServer(nama);
+//            chat c = new chat(s,waktu,pesan);
+//            c.CatatChat();
+        } catch (Exception ex) {
             Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -143,18 +113,13 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
         btnSend = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnSend1 = new javax.swing.JButton();
+        btnSend2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txtAreaMsg.setColumns(20);
         txtAreaMsg.setRows(5);
         jScrollPane1.setViewportView(txtAreaMsg);
-
-        txtMsg.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtMsgMousePressed(evt);
-            }
-        });
 
         jLabel2.setText("Pesan:");
 
@@ -175,6 +140,13 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
             }
         });
 
+        btnSend2.setText("Video");
+        btnSend2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSend2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,19 +154,21 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)))
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSend1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                        .addComponent(jLabel1)
+                        .addGap(101, 101, 101)
+                        .addComponent(btnSend1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSend2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +176,8 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(btnSend1))
+                    .addComponent(btnSend1)
+                    .addComponent(btnSend2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -218,19 +193,19 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         String pesan = txtMsg.getText();
-        this.sendChat(nama+": "+pesan);
-        txtAreaMsg.append("Me: "+ pesan +"\n");
+        txtAreaMsg.append("Me: " + pesan + "\n");
+        this.sendChat("myRental: " + pesan);
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnSend1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend1ActionPerformed
         FormAudioServer frm = new FormAudioServer();
         frm.setVisible(true);
-        
+
     }//GEN-LAST:event_btnSend1ActionPerformed
 
-    private void txtMsgMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMsgMousePressed
+    private void btnSend2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMsgMousePressed
+    }//GEN-LAST:event_btnSend2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -270,6 +245,7 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnSend1;
+    private javax.swing.JButton btnSend2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -280,18 +256,12 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
     @Override
     public void run() {
         try {
-           
-            String join = "chat-" + jLabel1.getText()+ "-"+nama ;
-            
-            this.sendChat(join);
-            
-            while (true) 
-            {
+            out.writeBytes("Halo, " + nama);
+            while (onWhile) { //Thread membuat Client selalu menerima pesan dari Server
                 this.showChat();
-                
             }
         } catch (Exception e) {
-             Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, e);
         }//To change body of generated methods, choose Tools | Templates.
     }
 }

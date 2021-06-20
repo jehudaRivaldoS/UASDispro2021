@@ -18,13 +18,12 @@ public class property extends MyConnect{
     private String nama;
     private String alamat;
     private String deskripsi;
-    private double harga;
+    private int harga;
     private double rating;
     private String kota;
-    private String status; 
     private String tipe_properti;
 
-    public property(int id,String nama, String alamat, String deskripsi, double harga, double rating, String kota, String status, String tipe_properti) {
+    public property(int id,String nama, String alamat, String deskripsi, int harga, double rating, String kota, String tipe_properti) {
         this.id = id;
         this.nama = nama;
         this.alamat = alamat;
@@ -32,7 +31,6 @@ public class property extends MyConnect{
         this.harga = harga;
         this.rating = rating;
         this.kota = kota;
-        this.status = status;
         this.tipe_properti = tipe_properti;
         
     }
@@ -43,7 +41,7 @@ public class property extends MyConnect{
     public property(int id) {
         this.id=id;
     }
-    public property(String nama, String alamat, double harga, String kota) {
+    public property(String nama, String alamat, int harga, String kota) {
         this.nama = nama;
         this.alamat = alamat;
         this.harga = harga;
@@ -83,11 +81,11 @@ public class property extends MyConnect{
         this.deskripsi = deskripsi;
     }
 
-    public double getHarga() {
+    public int getHarga() {
         return harga;
     }
 
-    public void setHarga(double harga) {
+    public void setHarga(int harga) {
         this.harga = harga;
     }
 
@@ -105,14 +103,6 @@ public class property extends MyConnect{
 
     public void setKota(String kota) {
         this.kota = kota;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getTipe_properti() {
@@ -135,7 +125,8 @@ public class property extends MyConnect{
                 result = state.executeQuery("select * from properti");
             }
             else{
-                PreparedStatement sql1 = (PreparedStatement)connect.prepareStatement("select * from properti where nama = "+ tipe);
+                PreparedStatement sql1 = (PreparedStatement)connect.prepareStatement("select * from properti where nama = '"+ tipe +"'");
+                
                 result = sql1.executeQuery();
             }
             while(result.next()){
@@ -144,12 +135,10 @@ public class property extends MyConnect{
                         result.getString("nama"),
                         result.getString("alamat"),
                         result.getString("deskripsi"),
-                        result.getDouble("harga"),
+                        result.getInt("harga"),
                         result.getDouble("rating"),
                         result.getString("kota"),
-                        result.getString("status"),
                         result.getString("tipe_properti")
-                        
                 );
                 collection.add(b); 
             }

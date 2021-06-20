@@ -7,11 +7,7 @@ package JavaAppClient;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class Konsultasi extends javax.swing.JFrame {
     Socket client;
-  //  int no=1;
+    int no=1;
     BufferedReader inp;
     DataOutputStream out;
     /**
@@ -37,9 +33,7 @@ public class Konsultasi extends javax.swing.JFrame {
         lblHarga.setText(harga);
         inp = inps;
         out = outs; 
-       // lblInformasi.setText(infoTambah);
     }
-     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,8 +47,6 @@ public class Konsultasi extends javax.swing.JFrame {
         lblNama = new javax.swing.JLabel();
         lblAlamat = new javax.swing.JLabel();
         lblHarga = new javax.swing.JLabel();
-        btnChat = new javax.swing.JButton();
-        btnReservasi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -64,22 +56,6 @@ public class Konsultasi extends javax.swing.JFrame {
 
         lblHarga.setText("Harga");
 
-        btnChat.setText("CHAT");
-        btnChat.setMaximumSize(new java.awt.Dimension(115, 29));
-        btnChat.setMinimumSize(new java.awt.Dimension(115, 29));
-        btnChat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChatActionPerformed(evt);
-            }
-        });
-
-        btnReservasi.setText("RESERVASI");
-        btnReservasi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReservasiActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,17 +63,10 @@ public class Konsultasi extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnChat, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                        .addComponent(btnReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNama)
-                            .addComponent(lblAlamat)
-                            .addComponent(lblHarga))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(lblNama)
+                    .addComponent(lblAlamat)
+                    .addComponent(lblHarga))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,30 +77,11 @@ public class Konsultasi extends javax.swing.JFrame {
                 .addComponent(lblAlamat)
                 .addGap(18, 18, 18)
                 .addComponent(lblHarga)
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnChat, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReservasi, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChatActionPerformed
-        // TODO add your handling code here:
-        FormChat a = new FormChat(client,lblNama.getText(),out,inp);
-        a.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnChatActionPerformed
-
-    private void btnReservasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasiActionPerformed
-        // TODO add your handling code here:
-        Reservasi r = new Reservasi(client,out,inp);
-       
-        r.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnReservasiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,8 +119,6 @@ public class Konsultasi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnChat;
-    private javax.swing.JButton btnReservasi;
     private javax.swing.JLabel lblAlamat;
     private javax.swing.JLabel lblHarga;
     private javax.swing.JLabel lblNama;

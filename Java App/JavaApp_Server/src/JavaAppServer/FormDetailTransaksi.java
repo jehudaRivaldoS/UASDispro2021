@@ -7,7 +7,11 @@ package JavaAppServer;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +30,8 @@ DataOutputStream out;
     }
     
      public FormDetailTransaksi(Socket s, String id, String rumah, String penyewa,
-             String tgl, String durasi, String jumOrang, String catatan, DataOutputStream outs, BufferedReader inps) {
+             String tgl, String durasi, String jumOrang, int status, String catatan) {
+    try {
         initComponents();
         client = s;
         
@@ -37,11 +42,24 @@ DataOutputStream out;
         jLabel5.setText("Tanggal Check In: "+ tgl);
         jLabel6.setText("Durasi Sewa: " + durasi);
         jLabel7.setText("Jumlah Orang: " +jumOrang);
-       
+        
+        String stat = "";
+        if(status == 0){
+            stat = "Verified";
+        }
+        else{
+            stat = "Finished";
+        }
+        
+        jLabel9.setText("Status: " +stat);
+        
         jTextArea1.setText(catatan);
         
-        inp = inps;
-        out = outs;   
+        inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        out = new DataOutputStream(client.getOutputStream());   
+    } catch (IOException ex) {
+        Logger.getLogger(FormDetailTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
 
     /**
@@ -64,6 +82,7 @@ DataOutputStream out;
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -84,6 +103,7 @@ DataOutputStream out;
 
         jLabel8.setText("Catatan Tambahan:");
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -95,21 +115,27 @@ DataOutputStream out;
             }
         });
 
+        jLabel9.setText("Status:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(98, 98, 98))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(177, 177, 177)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel8)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGap(301, 301, 301)
+                                    .addComponent(jButton1)
+                                    .addGap(23, 23, 23))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
@@ -117,13 +143,11 @@ DataOutputStream out;
                                     .addComponent(jLabel6))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel5))
-                                .addGap(24, 24, 24))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addComponent(jLabel1)))
+                                .addGap(46, 46, 46)))))
                 .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -146,12 +170,14 @@ DataOutputStream out;
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)))
                 .addGap(18, 18, 18)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -209,6 +235,7 @@ DataOutputStream out;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables

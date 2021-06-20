@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -203,15 +204,14 @@ BufferedReader inp;
                 String alamat = txtAlamat.getText();
                 String nomor = txtNomorTelpon.getText();
                 
-                DateFormat date = new SimpleDateFormat("yyyy/MM/dd");
                             
-                String tglLahir = String.valueOf(date.format(dateTimeLahir.getDate()));
+                String tglLahir = String.valueOf(LocalDate.parse(dateTimeLahir.toString()));
                 
                 String tempatLahir = txtTempatLahir.getText();
                 
-                String msg = "REGISTER-" + username + "-" + password +"-" +
-                        nama + "-" + alamat + "-" + nomor +
-                        "-" + tglLahir + "-" + tempatLahir; 
+                String msg = "REGISTER/" + username + "/" + password +"/" +
+                        nama + "/" + alamat + "/" + nomor +
+                        "/" + tglLahir + "/" + tempatLahir; 
                 System.out.println(tglLahir);
                 sendChat(msg);
                 

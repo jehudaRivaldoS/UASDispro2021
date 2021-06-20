@@ -19,10 +19,12 @@ import javax.swing.table.DefaultTableModel;
  * @author patrick
  */
 public class DetailRumah extends javax.swing.JFrame {
-Socket client;
-DataOutputStream out;
-BufferedReader inp;
-String infoUser ="";
+
+    Socket client;
+    DataOutputStream out;
+    BufferedReader inp;
+    FormPilihan frm;
+//String infoTambah ="";
 
     /**
      * Creates new form Konsultasi
@@ -30,46 +32,31 @@ String infoUser ="";
     public DetailRumah() {
         initComponents();
     }
-     public DetailRumah(Socket s, DataOutputStream outs, BufferedReader inps, String nama) {
+
+    public DetailRumah(Socket s, DataOutputStream outs, BufferedReader inps) {
         try {
             initComponents();
             client = s;
             out = outs;
-            inp = inps;         
-            infoUser = nama;
-            out.writeBytes("daftar rumah\n");
-            Refreshtable();
-            
-           
-        } catch (IOException ex) {
-            Logger.getLogger(DetailRumah.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-     
-     public DetailRumah(Socket s, DataOutputStream outs, BufferedReader inps) {
-        try {
-            initComponents();
-            client = s;
-            out = outs;
-            inp = inps;         
-            
+            inp = inps;
+            System.out.println("41");
             out.writeBytes("daftar rumah\n");
             Refreshtable();
         } catch (IOException ex) {
             Logger.getLogger(DetailRumah.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
-    public DetailRumah(Socket s) {
+
+    public DetailRumah(FormPilihan form, Socket s) {
         initComponents();
         try {
-            
-           this.client = s;
-           this.out = new DataOutputStream((client.getOutputStream()));
-           this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        
-           out.writeBytes("daftar rumah\n");
-            
+            frm = form;
+            this.client = s;
+            this.out = new DataOutputStream((client.getOutputStream()));
+            this.inp = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            System.out.println("56");
+            out.writeBytes("daftar rumah\n");
+
             Refreshtable();
         } catch (Exception ex) {
             Logger.getLogger(Reservasi.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,9 +75,13 @@ String infoUser ="";
         lblJudul = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProfil = new javax.swing.JTable();
-        btnKembali2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         lblJudul.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblJudul.setText("DETAIL RUMAH");
@@ -118,13 +109,6 @@ String infoUser ="";
         });
         jScrollPane1.setViewportView(tableProfil);
 
-        btnKembali2.setText("Kembali");
-        btnKembali2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnKembali2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,10 +122,6 @@ String infoUser ="";
                         .addGap(358, 358, 358)
                         .addComponent(lblJudul)))
                 .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnKembali2)
-                .addGap(144, 144, 144))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,9 +130,7 @@ String infoUser ="";
                 .addComponent(lblJudul)
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnKembali2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -161,23 +139,20 @@ String infoUser ="";
     private void tableProfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProfilMouseClicked
         // TODO add your handling code here:
         int i = tableProfil.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel)tableProfil.getModel();
-        
+        DefaultTableModel model = (DefaultTableModel) tableProfil.getModel();
+
         String nama = model.getValueAt(i, 0).toString();
         String alamat = model.getValueAt(i, 1).toString();
         String harga = model.getValueAt(i, 2).toString();
-       
-       // Konsultasi k = new Konsultasi(client,nama,alamat,harga,out,inp);
-        Konsultasi k = new Konsultasi(client,nama,alamat,harga,out,inp);
+
+        Konsultasi k = new Konsultasi(client, nama, alamat, harga, out, inp);
         k.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_tableProfilMouseClicked
 
-    private void btnKembali2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembali2ActionPerformed
-        // TODO add your handling code here:
-        new FormPilihan(client, infoUser).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnKembali2ActionPerformed
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        frm.setEnabled(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -218,43 +193,35 @@ String infoUser ="";
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnKembali;
-    private javax.swing.JButton btnKembali1;
-    private javax.swing.JButton btnKembali2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JTable tableProfil;
     // End of variables declaration//GEN-END:variables
-    
-    public void Refreshtable(){
-       
+
+    // <editor-fold defaultstate="collapsed" desc="Refreshtable()">
+    public void Refreshtable() {
         try {
-            
-            DefaultTableModel model = (DefaultTableModel)tableProfil.getModel();
+            DefaultTableModel model = (DefaultTableModel) tableProfil.getModel();
             model.setRowCount(0);
             Object[] rowData = new Object[3];
+            System.out.println("197");
             String pesan = inp.readLine();
-                       
+
             String[] info = pesan.split("-");
-           
+
             StringBuilder b = new StringBuilder(pesan);
-            b.replace(pesan.lastIndexOf("-"),pesan.lastIndexOf("-")+1, "");
+            b.replace(pesan.lastIndexOf("-"), pesan.lastIndexOf("-") + 1, "");
             pesan = b.toString();
-                       
-            for(int i=0; i<info.length; i+=3)
-            {
+
+            for (int i = 0; i < info.length; i += 3) {
                 rowData[0] = info[i];
-                
-                rowData[1] = info[1+i];
-              
-                rowData[2] = info[2+i];
+                rowData[1] = info[1 + i];
+                rowData[2] = info[2 + i];
                 model.addRow(rowData);
-                
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DetailRumah.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
+    // </editor-fold>
 }
