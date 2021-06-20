@@ -114,18 +114,8 @@ public class DetailPenyewa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnChatActionPerformed
 
     private void btnAudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAudioActionPerformed
-        try {
-            // TODO add your handling code here:
-            FormAudio a = new FormAudio();
-            a.setVisible(true);
-            //FormMicClient m = new FormMicClient();
-            //m.setVisible(true);
-            this.setEnabled(false);
-        } catch (IOException ex) {
-            Logger.getLogger(DetailPenyewa.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(DetailPenyewa.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FormClientVoice frm = new FormClientVoice();
+        frm.setVisible(true);
     }//GEN-LAST:event_btnAudioActionPerformed
 
     /**

@@ -143,7 +143,6 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
         btnSend = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btnSend1 = new javax.swing.JButton();
-        btnSend2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -176,13 +175,6 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
             }
         });
 
-        btnSend2.setText("Video");
-        btnSend2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSend2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -190,21 +182,19 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(101, 101, 101)
-                        .addComponent(btnSend1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSend2))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)))
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSend1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,8 +202,7 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(btnSend1)
-                    .addComponent(btnSend2))
+                    .addComponent(btnSend1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -234,21 +223,10 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnSend1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            FormAudioUser frm = new FormAudioUser();
-            frm.setVisible(true);
-        } catch (IOException ex) {
-            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(FormChatUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FormAudioServer frm = new FormAudioServer();
+        frm.setVisible(true);
         
     }//GEN-LAST:event_btnSend1ActionPerformed
-
-    private void btnSend2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSend2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSend2ActionPerformed
 
     private void txtMsgMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtMsgMousePressed
         // TODO add your handling code here:
@@ -292,7 +270,6 @@ public class FormChatUser extends javax.swing.JFrame implements Runnable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnSend1;
-    private javax.swing.JButton btnSend2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
